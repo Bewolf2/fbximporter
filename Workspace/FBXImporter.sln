@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FBXImporter (32-bit)", "FBXImporter_win32_vs2010.vcxproj", "{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug DLL|Mixed Platforms = Debug DLL|Mixed Platforms
+		Debug DLL|win32 = Debug DLL|win32
+		Debug DLL|x64 = Debug DLL|x64
+		Dev DLL|Mixed Platforms = Dev DLL|Mixed Platforms
+		Dev DLL|win32 = Dev DLL|win32
+		Dev DLL|x64 = Dev DLL|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Debug DLL|Mixed Platforms.ActiveCfg = Debug DLL|win32
+		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Debug DLL|Mixed Platforms.Build.0 = Debug DLL|win32
+		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Debug DLL|win32.ActiveCfg = Debug DLL|win32
+		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Debug DLL|win32.Build.0 = Debug DLL|win32
+		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Debug DLL|x64.ActiveCfg = Debug DLL|win32
+		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Dev DLL|Mixed Platforms.ActiveCfg = Dev DLL|win32
+		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Dev DLL|Mixed Platforms.Build.0 = Dev DLL|win32
+		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Dev DLL|win32.ActiveCfg = Dev DLL|win32
+		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Dev DLL|win32.Build.0 = Dev DLL|win32
+		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Dev DLL|x64.ActiveCfg = Dev DLL|win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hkoptions>
+	<hkobject class="hctConfigurationSetData">
+		<hkparam name="filterManagerVersion">65536</hkparam>
+		<hkparam name="activeConfiguration">0</hkparam>
+	</hkobject>
+	<hkobject class="hctConfigurationData">
+		<hkparam name="configurationName">Default</hkparam>
+		<hkparam name="numFilters">3</hkparam>
+	</hkobject>
+	<hkobject name="Transform Scene" class="hctFilterData">
+		<hkparam name="id">2860016997</hkparam>
+		<hkparam name="ver">66049</hkparam>
+		<hkparam name="hasOptions">true</hkparam>
+	</hkobject>
+	<hkobject name="Transform Scene" class="hctSceneTransformOptions">
+		<hkparam name="preset">IDENTITY</hkparam>
+		<hkparam name="applyToNodes">true</hkparam>
+		<hkparam name="applyToBuffers">true</hkparam>
+		<hkparam name="applyToFloatChannels">true</hkparam>
+		<hkparam name="applyToLights">true</hkparam>
+		<hkparam name="applyToCameras">true</hkparam>
+		<hkparam name="flipWinding">false</hkparam>
+		<hkparam name="matrix">(1.000000 0.000000 0.000000 0.000000)(0.000000 1.000000 0.000000 0.000000)(0.000000 0.000000 1.000000 0.000000)(0.000000 0.000000 0.000000 1.000000)</hkparam>
+	</hkobject>
+	<hkobject name="Process Vision Data" class="hctFilterData">
+		<hkparam name="id">2940330306</hkparam>
+		<hkparam name="ver">66049</hkparam>
+		<hkparam name="hasOptions">true</hkparam>
+	</hkobject>
+	<hkobject name="Process Vision Data" class="hctCreateVisionDataOptions">
+		<hkparam name="havokFromVisionTransform">(1.000000 0.000000 0.000000)(0.000000 1.000000 0.000000)(0.000000 0.000000 1.000000)</hkparam>
+		<hkparam name="embedMeshes">false</hkparam>
+		<hkparam name="embedMeshesForDestruction">false</hkparam>
+		<hkparam name="visionExportOptions">&#9216;</hkparam>
+		<hkparam name="exportFilename">$(output)</hkparam>
+		<hkparam name="selectionSets"></hkparam>
+		<hkparam name="selectionDeletionMode">HK_SELECTION_DELETE_NOT_SELECTED</hkparam>
+	</hkobject>
+	<hkobject name="Preview Tool" class="hctFilterData">
+		<hkparam name="id">1879060683</hkparam>
+		<hkparam name="ver">65795</hkparam>
+		<hkparam name="hasOptions">true</hkparam>
+	</hkobject>
+	<hkobject name="Preview Tool" class="hctFilterToolStubImplOptions">
+		<hkparam name="renderer"></hkparam>
+	</hkobject>
+</hkoptions>

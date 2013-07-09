@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hkoptions>
+	<hkobject class="hctConfigurationSetData">
+		<hkparam name="filterManagerVersion">65536</hkparam>
+		<hkparam name="activeConfiguration">0</hkparam>
+	</hkobject>
+	<hkobject class="hctConfigurationData">
+		<hkparam name="configurationName">Default</hkparam>
+		<hkparam name="numFilters">6</hkparam>
+	</hkobject>
+	<hkobject name="Transform Scene" class="hctFilterData">
+		<hkparam name="id">2860016997</hkparam>
+		<hkparam name="ver">66049</hkparam>
+		<hkparam name="hasOptions">true</hkparam>
+	</hkobject>
+	<hkobject name="Transform Scene" class="hctSceneTransformOptions">
+		<hkparam name="preset">IDENTITY</hkparam>
+		<hkparam name="applyToNodes">true</hkparam>
+		<hkparam name="applyToBuffers">true</hkparam>
+		<hkparam name="applyToFloatChannels">true</hkparam>
+		<hkparam name="applyToLights">true</hkparam>
+		<hkparam name="applyToCameras">true</hkparam>
+		<hkparam name="flipWinding">false</hkparam>
+		<hkparam name="matrix">(1.000000 0.000000 0.000000 0.000000)(0.000000 1.000000 0.000000 0.000000)(0.000000 0.000000 1.000000 0.000000)(0.000000 0.000000 0.000000 1.000000)</hkparam>
+	</hkobject>
+	<hkobject name="Create Skeletons" class="hctFilterData">
+		<hkparam name="id">769831784</hkparam>
+		<hkparam name="ver">66056</hkparam>
+		<hkparam name="hasOptions">true</hkparam>
+	</hkobject>
+	<hkobject name="Create Skeletons" class="hctCreateSkeletonOptions">
+		<hkparam name="moveToOrigin">false</hkparam>
+		<hkparam name="automatic">true</hkparam>
+		<hkparam name="rigNodes">Hips;Spine;Spine1;Spine2;Neck;Neck1;Head;HeadTop_End;L_Ear;Jaw;TongueBack;TongueMid;TongueTip;Chin;LowerChin;L_Temple;L_IOuterBrow;L_MidBrow;L_InnerBrow;L_Eye;L_EyelidLower;L_EyelidUpper;L_InnerCheek;L_LowerCheek;L_LipLower;L_LipUpper;LipMidLower;LipMidUpper;L_CheekFold;L_Nostril;Scalp;L_OuterCheek;R_LipLower;RightNostril;R_CheekFold;R_LowerCheek;R_LipUpper;R_OuterCheek;MidBrows;R_InnerBrow;R_MidBrow;R_IOuterBrow;R_Eye;R_EyelidLower;R_EyelidUpper;R_Temple;R_Ear;R_InnerCheek;L_LipCorner;L_LipCornerLowTweak;L_LipCornerUpTweak;R_gLipCorner;R_gLipCornerUpTweak;R_gLipCornerLowTweak;Throat;LeftShoulder;LeftArm;LeftForeArm;LeftHand;LeftHandThumb1;LeftHandThumb2;LeftHandThumb3;LeftHandThumb4;LeftHandMiddle1;LeftHandMiddle2;LeftHandMiddle3;LeftHandMiddle4;LeftHandIndex1;LeftHandIndex2;LeftHandIndex3;LeftHandIndex4;LeftHandRing1;LeftHandRing2;LeftHandRing3;LeftHandRing4;LeftHandPinky1;LeftHandPinky2;LeftHandPinky3;LeftHandPinky4;RightShoulder;RightArm;RightForeArm;RightHand;RightHandThumb1;RightHandThumb2;RightHandThumb3;RightHandThumb4;RightHandIndex1;RightHandIndex2;RightHandIndex3;RightHandIndex4;RightHandMiddle1;RightHandMiddle2;RightHandMiddle3;RightHandMiddle4;RightHandRing1;RightHandRing2;RightHandRing3;RightHandRing4;RightHandPinky1;RightHandPinky2;RightHandPinky3;RightHandPinky4;LeftUpLeg;LeftLeg;LeftFoot;LeftToeBase;LeftFootToeBase_End;RightUpLeg;RightLeg;RightFoot;RightToeBase;RightFootToeBase_End;</hkparam>
+		<hkparam name="rigFile">&#9216;</hkparam>
+		<hkparam name="selected">false</hkparam>
+		<hkparam name="skinBindings">false</hkparam>
+		<hkparam name="floatSlots"></hkparam>
+		<hkparam name="useOrderInFile">false</hkparam>
+		<hkparam name="substringMatch">false</hkparam>
+		<hkparam name="skeletonName"></hkparam>
+		<hkparam name="partitions"></hkparam>
+		<hkparam name="partitionStartBoneNames"></hkparam>
+		<hkparam name="partitionEndBoneNames"></hkparam>
+		<hkparam name="useRootBoneNameAsSkeletonName">true</hkparam>
+	</hkobject>
+	<hkobject name="Create Skins" class="hctFilterData">
+		<hkparam name="id">385768003</hkparam>
+		<hkparam name="ver">65539</hkparam>
+		<hkparam name="hasOptions">true</hkparam>
+	</hkobject>
+	<hkobject name="Create Skins" class="hctCreateSkinOptions">
+		<hkparam name="simplifyBindings">true</hkparam>
+		<hkparam name="moveMeshesToSkeletonSpace">false</hkparam>
+		<hkparam name="boneLimit">-1</hkparam>
+		<hkparam name="ignoreBonesInSkin">true</hkparam>
+	</hkobject>
+	<hkobject name="Create Animations" class="hctFilterData">
+		<hkparam name="id">769831785</hkparam>
+		<hkparam name="ver">66054</hkparam>
+		<hkparam name="hasOptions">true</hkparam>
+	</hkobject>
+	<hkobject name="Create Animations" class="hctCreateAnimationsOptions">
+		<hkparam name="moveToOriginX">true</hkparam>
+		<hkparam name="moveToOriginY">true</hkparam>
+		<hkparam name="moveToOriginZ">false</hkparam>
+		<hkparam name="animationStartNodes">This member is no longer in use.</hkparam>
+		<hkparam name="subAnimation">false</hkparam>
+		<hkparam name="subAnimationStartFrame">0</hkparam>
+		<hkparam name="subAnimationEndFrame">0</hkparam>
+		<hkparam name="selected">false</hkparam>
+		<hkparam name="manual">false</hkparam>
+		<hkparam name="rigFilename">&#9216;</hkparam>
+		<hkparam name="partialAnimationNodes"></hkparam>
+		<hkparam name="nameAnimationTracks">true</hkparam>
+		<hkparam name="previewColor">4286545791</hkparam>
+		<hkparam name="floatTracks"></hkparam>
+	</hkobject>
+	<hkobject name="Process Vision Data" class="hctFilterData">
+		<hkparam name="id">2940330306</hkparam>
+		<hkparam name="ver">66049</hkparam>
+		<hkparam name="hasOptions">true</hkparam>
+	</hkobject>
+	<hkobject name="Process Vision Data" class="hctCreateVisionDataOptions">
+		<hkparam name="havokFromVisionTransform">(1.000000 0.000000 0.000000)(0.000000 1.000000 0.000000)(0.000000 0.000000 1.000000)</hkparam>
+		<hkparam name="embedMeshes">false</hkparam>
+		<hkparam name="embedMeshesForDestruction">false</hkparam>
+		<hkparam name="visionExportOptions">&#9216;</hkparam>
+		<hkparam name="exportFilename">$(output)</hkparam>
+		<hkparam name="selectionSets"></hkparam>
+		<hkparam name="selectionDeletionMode">HK_SELECTION_DELETE_NOT_SELECTED</hkparam>
+	</hkobject>
+	<hkobject name="Preview Tool" class="hctFilterData">
+		<hkparam name="id">1879060683</hkparam>
+		<hkparam name="ver">65795</hkparam>
+		<hkparam name="hasOptions">true</hkparam>
+	</hkobject>
+	<hkobject name="Preview Tool" class="hctFilterToolStubImplOptions">
+		<hkparam name="renderer"></hkparam>
+	</hkobject>
+</hkoptions>

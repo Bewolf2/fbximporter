@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hkoptions>
+	<hkobject class="hctConfigurationSetData">
+		<hkparam name="filterManagerVersion">65536</hkparam>
+		<hkparam name="activeConfiguration">0</hkparam>
+	</hkobject>
+	<hkobject class="hctConfigurationData">
+		<hkparam name="configurationName">Default</hkparam>
+		<hkparam name="numFilters">5</hkparam>
+	</hkobject>
+	<hkobject name="Transform Scene" class="hctFilterData">
+		<hkparam name="id">2860016997</hkparam>
+		<hkparam name="ver">66049</hkparam>
+		<hkparam name="hasOptions">true</hkparam>
+	</hkobject>
+	<hkobject name="Transform Scene" class="hctSceneTransformOptions">
+		<hkparam name="preset">IDENTITY</hkparam>
+		<hkparam name="applyToNodes">true</hkparam>
+		<hkparam name="applyToBuffers">true</hkparam>
+		<hkparam name="applyToFloatChannels">true</hkparam>
+		<hkparam name="applyToLights">true</hkparam>
+		<hkparam name="applyToCameras">true</hkparam>
+		<hkparam name="flipWinding">false</hkparam>
+		<hkparam name="matrix">(1.000000 0.000000 0.000000 0.000000)(0.000000 1.000000 0.000000 0.000000)(0.000000 0.000000 1.000000 0.000000)(0.000000 0.000000 0.000000 1.000000)</hkparam>
+	</hkobject>
+	<hkobject name="Create Skeletons" class="hctFilterData">
+		<hkparam name="id">769831784</hkparam>
+		<hkparam name="ver">66056</hkparam>
+		<hkparam name="hasOptions">true</hkparam>
+	</hkobject>
+	<hkobject name="Create Skeletons" class="hctCreateSkeletonOptions">
+		<hkparam name="moveToOrigin">false</hkparam>
+		<hkparam name="automatic">true</hkparam>
+		<hkparam name="selected">false</hkparam>
+		<hkparam name="skinBindings">false</hkparam>
+		<hkparam name="floatSlots"></hkparam>
+		<hkparam name="useOrderInFile">false</hkparam>
+		<hkparam name="substringMatch">false</hkparam>
+		<hkparam name="skeletonName"></hkparam>
+		<hkparam name="partitions"></hkparam>
+		<hkparam name="partitionStartBoneNames"></hkparam>
+		<hkparam name="partitionEndBoneNames"></hkparam>
+		<hkparam name="useRootBoneNameAsSkeletonName">true</hkparam>
+	</hkobject>
+	<hkobject name="Create Skins" class="hctFilterData">
+		<hkparam name="id">385768003</hkparam>
+		<hkparam name="ver">65539</hkparam>
+		<hkparam name="hasOptions">true</hkparam>
+	</hkobject>
+	<hkobject name="Create Skins" class="hctCreateSkinOptions">
+		<hkparam name="simplifyBindings">true</hkparam>
+		<hkparam name="moveMeshesToSkeletonSpace">false</hkparam>
+		<hkparam name="boneLimit">-1</hkparam>
+		<hkparam name="ignoreBonesInSkin">true</hkparam>
+	</hkobject>
+	<hkobject name="Prune Types" class="hctFilterData">
+		<hkparam name="id">2496164476</hkparam>
+		<hkparam name="ver">66048</hkparam>
+		<hkparam name="hasOptions">true</hkparam>
+	</hkobject>
+	<hkobject name="Prune Types" class="hctPruneTypesOptions">
+		<hkparam name="pruneSceneData">false</hkparam>
+		<hkparam name="pruneMeshData">false</hkparam>
+		<hkparam name="pruneSkeletonData">false</hkparam>
+		<hkparam name="pruneAnimationData">false</hkparam>
+		<hkparam name="customClasses"></hkparam>
+		<hkparam name="pruneAllSceneData">false</hkparam>
+		<hkparam name="pruneEnvironmentData">false</hkparam>
+		<hkparam name="pruneResourceData">false</hkparam>
+		<hkparam name="pruneDestructionData">true</hkparam>
+		<hkparam name="pruneAnimationTracks">false</hkparam>
+		<hkparam name="pruneAnnotations">false</hkparam>
+		<hkparam name="pruneIdentityBindingIndices">false</hkparam>
+		<hkparam name="pruneQuantizedBindings">false</hkparam>
+		<hkparam name="pruneAttributes">false</hkparam>
+		<hkparam name="pruneMeshUserChannels">true</hkparam>
+		<hkparam name="pruneAttachments">false</hkparam>
+		<hkparam name="pruneSelectionSets">true</hkparam>
+		<hkparam name="selectionSets"></hkparam>
+		<hkparam name="selectionDeletionMode">HK_SELECTION_DELETE_SELECTED</hkparam>
+		<hkparam name="pruneAllAnimationData">false</hkparam>
+		<hkparam name="pruneMeshBindingData">false</hkparam>
+		<hkparam name="pruneRagdollAndMapperData">true</hkparam>
+	</hkobject>
+	<hkobject name="Write to Platform" class="hctFilterData">
+		<hkparam name="id">2876798309</hkparam>
+		<hkparam name="ver">66048</hkparam>
+		<hkparam name="hasOptions">true</hkparam>
+	</hkobject>
+	<hkobject name="Write to Platform" class="hctPlatformWriterOptions">
+		<hkparam name="filename">$(output)</hkparam>
+		<hkparam name="tagfile">true</hkparam>
+		<hkparam name="preset">MSVC_WIN32</hkparam>
+		<hkparam name="bytesInPointer">4</hkparam>
+		<hkparam name="littleEndian">1</hkparam>
+		<hkparam name="reusePaddingOptimized">0</hkparam>
+		<hkparam name="emptyBaseClassOptimized">1</hkparam>
+		<hkparam name="removeMetadata">false</hkparam>
+		<hkparam name="userTag">0</hkparam>
+		<hkparam name="saveEnvironmentData">false</hkparam>
+		<hkparam name="xmlFormat">false</hkparam>
+	</hkobject>
+</hkoptions>
