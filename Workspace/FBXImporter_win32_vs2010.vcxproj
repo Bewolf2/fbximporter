@@ -8,32 +8,12 @@
     REQUIRED_HAVOK_PRODUCTS = "PHYSICS_2012"
   -->
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|win32">
-      <Configuration>Debug</Configuration>
-      <Platform>win32</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug DLL|win32">
       <Configuration>Debug DLL</Configuration>
       <Platform>win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Dev|win32">
-      <Configuration>Dev</Configuration>
-      <Platform>win32</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Dev DLL|win32">
       <Configuration>Dev DLL</Configuration>
-      <Platform>win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Hybrid DLL|win32">
-      <Configuration>Hybrid DLL</Configuration>
-      <Platform>win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|win32">
-      <Configuration>Release</Configuration>
-      <Platform>win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release DLL|win32">
-      <Configuration>Release DLL</Configuration>
       <Platform>win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
@@ -43,22 +23,10 @@
     <Keyword>Application</Keyword>
     <RootNamespace>
     </RootNamespace>
-    <ProjectName>FBXImporter (32-bit)</ProjectName>
+    <ProjectName>FBXImporter</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|win32'" Label="Configuration">
-    <CharacterSet>Unicode</CharacterSet>
-    <ConfigurationType>Application</ConfigurationType>
-    <CLRSupport>false</CLRSupport>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'" Label="Configuration">
-    <CharacterSet>Unicode</CharacterSet>
-    <ConfigurationType>Application</ConfigurationType>
-    <CLRSupport>false</CLRSupport>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dev|win32'" Label="Configuration">
     <CharacterSet>Unicode</CharacterSet>
     <ConfigurationType>Application</ConfigurationType>
     <CLRSupport>false</CLRSupport>
@@ -70,148 +38,21 @@
     <CLRSupport>false</CLRSupport>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Hybrid DLL|win32'" Label="Configuration">
-    <CharacterSet>Unicode</CharacterSet>
-    <ConfigurationType>Application</ConfigurationType>
-    <CLRSupport>false</CLRSupport>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|win32'" Label="Configuration">
-    <CharacterSet>Unicode</CharacterSet>
-    <ConfigurationType>Application</ConfigurationType>
-    <CLRSupport>false</CLRSupport>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release DLL|win32'" Label="Configuration">
-    <CharacterSet>Unicode</CharacterSet>
-    <ConfigurationType>Application</ConfigurationType>
-    <CLRSupport>false</CLRSupport>
-    <UseOfMfc>false</UseOfMfc>
-  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <PropertyGroup>
-    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">.exe</TargetExt>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">.exe</TargetExt>
-    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Dev|win32'">.exe</TargetExt>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">.exe</TargetExt>
-    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Hybrid DLL|win32'">.exe</TargetExt>
-    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|win32'">.exe</TargetExt>
-    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release DLL|win32'">.exe</TargetExt>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">..\..\Obj\win32_vs2010\debug\FBXImporter\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">exe\win32_vs2010\debug\</OutDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">FBXImporter</TargetName>
-    <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">exe\win32_vs2010\debug\FBXImporter.exe</OutputFile>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">..\..\Obj\win32_vs2010\debug_dll\FBXImporter\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">exe\win32_vs2010\debug_dll\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">..\..\..\Obj\win32_vs2010_anarchy\debug_dll\FBXImporter\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">..\..\..\Bin\Tools</OutDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">FBXImporter</TargetName>
     <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">exe\win32_vs2010\debug_dll\FBXImporter.exe</OutputFile>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Dev|win32'">..\..\Obj\win32_vs2010\dev\FBXImporter\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Dev|win32'">exe\win32_vs2010\dev\</OutDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Dev|win32'">FBXImporter</TargetName>
-    <OutputFile Condition="'$(Configuration)|$(Platform)'=='Dev|win32'">exe\win32_vs2010\dev\FBXImporter.exe</OutputFile>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">..\..\Obj\win32_vs2010\dev_dll\FBXImporter\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">exe\win32_vs2010\dev_dll\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">..\..\..\Obj\win32_vs2010_anarchy\debug_dll\FBXImporter\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">..\..\..\Bin\Tools</OutDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">FBXImporter</TargetName>
     <OutputFile Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">exe\win32_vs2010\dev_dll\FBXImporter.exe</OutputFile>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Hybrid DLL|win32'">..\..\Obj\win32_vs2010\hybrid_dll\FBXImporter\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Hybrid DLL|win32'">exe\win32_vs2010\hybrid_dll\</OutDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Hybrid DLL|win32'">FBXImporter</TargetName>
-    <OutputFile Condition="'$(Configuration)|$(Platform)'=='Hybrid DLL|win32'">exe\win32_vs2010\hybrid_dll\FBXImporter.exe</OutputFile>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|win32'">..\..\Obj\win32_vs2010\release\FBXImporter\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|win32'">exe\win32_vs2010\release\</OutDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|win32'">FBXImporter</TargetName>
-    <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|win32'">exe\win32_vs2010\release\FBXImporter.exe</OutputFile>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release DLL|win32'">..\..\Obj\win32_vs2010\release_dll\FBXImporter\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release DLL|win32'">exe\win32_vs2010\release_dll\</OutDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release DLL|win32'">FBXImporter</TargetName>
-    <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release DLL|win32'">exe\win32_vs2010\release_dll\FBXImporter.exe</OutputFile>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">true</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">true</LinkIncremental>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Dev|win32'">true</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">true</LinkIncremental>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Hybrid DLL|win32'">true</LinkIncremental>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|win32'">false</LinkIncremental>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release DLL|win32'">false</LinkIncremental>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">
-    <ClCompile>
-      <AdditionalIncludeDirectories>..\Source;..\..\Source;..\..\..\Source;..;$(HAVOK_THIRDPARTY_DIR)/sdks/win32/FBX/2013.3/include;</AdditionalIncludeDirectories>
-      <AdditionalOptions>
-      </AdditionalOptions>
-      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
-      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <BufferSecurityCheck>true</BufferSecurityCheck>
-      <SDLCheck>true</SDLCheck>
-      <CallingConvention>Cdecl</CallingConvention>
-      <CompileAs>Default</CompileAs>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <DisableSpecificWarnings>
-      </DisableSpecificWarnings>
-      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <EnablePREfast>
-      </EnablePREfast>
-      <ExceptionHandling>false</ExceptionHandling>
-      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
-      <FloatingPointExceptions>false</FloatingPointExceptions>
-      <FloatingPointModel>Fast</FloatingPointModel>
-      <FunctionLevelLinking>false</FunctionLevelLinking>
-      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <MinimalRebuild>false</MinimalRebuild>
-      <ObjectFileName>$(IntDir)</ObjectFileName>
-      <OmitFramePointers>
-      </OmitFramePointers>
-      <Optimization>disabled</Optimization>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <PrecompiledHeaderFile>
-      </PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>$(IntDir)FBXImporter.pch</PrecompiledHeaderOutputFile>
-      <PreprocessorDefinitions>_WINDOWS;WIN32;_WIN32;_DEBUG;HK_DEBUG;HK_DEBUG_SLOW;_XT_STATICLINK;_CONSOLE;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;;HK_CONFIG_SIMD=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <UndefinePreprocessorDefinitions>
-      </UndefinePreprocessorDefinitions>
-      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <StringPooling>true</StringPooling>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TreatWarningAsError>true</TreatWarningAsError>
-      <WarningLevel>Level4</WarningLevel>
-      <CompileAsManaged>false</CompileAsManaged>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-    </ClCompile>
-    <ResourceCompile>
-      <ResourceOutputFileName>
-      </ResourceOutputFileName>
-      <AdditionalIncludeDirectories>$(IntDir)</AdditionalIncludeDirectories>
-    </ResourceCompile>
-    <Lib>
-      <IgnoreAllDefaultLibraries>
-      </IgnoreAllDefaultLibraries>
-      <AdditionalDependencies>fbxsdk-2013.3-mtd.lib;WinInet.lib;user32.lib;Advapi32.lib;hkBase.lib;hkCompat.lib;hkSceneData.lib;hkSerialize.lib;hkInternal.lib;hkGeometryUtilities.lib;hkVisualize.lib;hkcdInternal.lib;hkcdCollide.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\Lib\win32_vs2010_anarchy\debug;$(HAVOK_THIRDPARTY_DIR)/sdks/win32/FBX/2013.3/lib/vs2010/x86</AdditionalLibraryDirectories>
-      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <UseUnicodeResponseFiles>true</UseUnicodeResponseFiles>
-      <AdditionalOptions> /ignore:4221</AdditionalOptions>
-    </Lib>
-    <Link>
-      <AdditionalDependencies>fbxsdk-2013.3-mtd.lib;WinInet.lib;user32.lib;Advapi32.lib;hkBase.lib;hkCompat.lib;hkSceneData.lib;hkSerialize.lib;hkInternal.lib;hkGeometryUtilities.lib;hkVisualize.lib;hkcdInternal.lib;hkcdCollide.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\Lib\win32_vs2010_anarchy\debug;$(HAVOK_THIRDPARTY_DIR)/sdks/win32/FBX/2013.3/lib/vs2010/x86</AdditionalLibraryDirectories>
-      <AdditionalOptions> /ignore:4221</AdditionalOptions>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ImportLibrary>
-      </ImportLibrary>
-      <AssemblyDebug>
-      </AssemblyDebug>
-      <SubSystem>Console</SubSystem>
-      <ManifestFile>$(IntDir)Manifest$(TargetExt).intermediate.manifest</ManifestFile>
-      <OptimizeReferences>
-      </OptimizeReferences>
-      <EnableCOMDATFolding>
-      </EnableCOMDATFolding>
-    </Link>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">
     <ClCompile>
       <AdditionalIncludeDirectories>..\Source;..\..\Source;..\..\..\Source;..;$(HAVOK_THIRDPARTY_DIR)/sdks/win32/FBX/2013.3/include;</AdditionalIncludeDirectories>
@@ -277,85 +118,6 @@
     <Link>
       <AdditionalDependencies>fbxsdk-2013.3-mdd.lib;WinInet.lib;user32.lib;Advapi32.lib;hkBase.lib;hkCompat.lib;hkSceneData.lib;hkSerialize.lib;hkInternal.lib;hkGeometryUtilities.lib;hkVisualize.lib;hkcdInternal.lib;hkcdCollide.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\..\Lib\win32_vs2010_anarchy\debug_dll;$(HAVOK_THIRDPARTY_DIR)/sdks/win32/FBX/2013.3/lib/vs2010/x86</AdditionalLibraryDirectories>
-      <AdditionalOptions> /ignore:4221</AdditionalOptions>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ImportLibrary>
-      </ImportLibrary>
-      <AssemblyDebug>
-      </AssemblyDebug>
-      <SubSystem>Console</SubSystem>
-      <ManifestFile>$(IntDir)Manifest$(TargetExt).intermediate.manifest</ManifestFile>
-      <OptimizeReferences>
-      </OptimizeReferences>
-      <EnableCOMDATFolding>
-      </EnableCOMDATFolding>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dev|win32'">
-    <ClCompile>
-      <AdditionalIncludeDirectories>..\Source;..\..\Source;..\..\..\Source;..;$(HAVOK_THIRDPARTY_DIR)/sdks/win32/FBX/2013.3/include;</AdditionalIncludeDirectories>
-      <AdditionalOptions>
-      </AdditionalOptions>
-      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
-      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <BufferSecurityCheck>true</BufferSecurityCheck>
-      <SDLCheck>true</SDLCheck>
-      <CallingConvention>Cdecl</CallingConvention>
-      <CompileAs>Default</CompileAs>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <DisableSpecificWarnings>
-      </DisableSpecificWarnings>
-      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <EnablePREfast>
-      </EnablePREfast>
-      <ExceptionHandling>false</ExceptionHandling>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <FloatingPointExceptions>false</FloatingPointExceptions>
-      <FloatingPointModel>Fast</FloatingPointModel>
-      <FunctionLevelLinking>false</FunctionLevelLinking>
-      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <MinimalRebuild>false</MinimalRebuild>
-      <ObjectFileName>$(IntDir)</ObjectFileName>
-      <OmitFramePointers>
-      </OmitFramePointers>
-      <Optimization>Full</Optimization>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <PrecompiledHeaderFile>
-      </PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>$(IntDir)FBXImporter.pch</PrecompiledHeaderOutputFile>
-      <PreprocessorDefinitions>_WINDOWS;WIN32;_WIN32;HK_DEBUG;_XT_STATICLINK;_CONSOLE;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;;HK_CONFIG_SIMD=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <UndefinePreprocessorDefinitions>
-      </UndefinePreprocessorDefinitions>
-      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <StringPooling>true</StringPooling>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TreatWarningAsError>true</TreatWarningAsError>
-      <WarningLevel>Level4</WarningLevel>
-      <CompileAsManaged>false</CompileAsManaged>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-    </ClCompile>
-    <ResourceCompile>
-      <ResourceOutputFileName>
-      </ResourceOutputFileName>
-      <AdditionalIncludeDirectories>$(IntDir)</AdditionalIncludeDirectories>
-    </ResourceCompile>
-    <Lib>
-      <IgnoreAllDefaultLibraries>
-      </IgnoreAllDefaultLibraries>
-      <AdditionalDependencies>fbxsdk-2013.3-mt.lib;WinInet.lib;user32.lib;Advapi32.lib;hkBase.lib;hkCompat.lib;hkSceneData.lib;hkSerialize.lib;hkInternal.lib;hkGeometryUtilities.lib;hkVisualize.lib;hkcdInternal.lib;hkcdCollide.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\Lib\win32_vs2010_anarchy\dev;$(HAVOK_THIRDPARTY_DIR)/sdks/win32/FBX/2013.3/lib/vs2010/x86</AdditionalLibraryDirectories>
-      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <UseUnicodeResponseFiles>true</UseUnicodeResponseFiles>
-      <AdditionalOptions> /ignore:4221</AdditionalOptions>
-    </Lib>
-    <Link>
-      <AdditionalDependencies>fbxsdk-2013.3-mt.lib;WinInet.lib;user32.lib;Advapi32.lib;hkBase.lib;hkCompat.lib;hkSceneData.lib;hkSerialize.lib;hkInternal.lib;hkGeometryUtilities.lib;hkVisualize.lib;hkcdInternal.lib;hkcdCollide.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\Lib\win32_vs2010_anarchy\dev;$(HAVOK_THIRDPARTY_DIR)/sdks/win32/FBX/2013.3/lib/vs2010/x86</AdditionalLibraryDirectories>
       <AdditionalOptions> /ignore:4221</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ImportLibrary>
@@ -449,239 +211,6 @@
       </EnableCOMDATFolding>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Hybrid DLL|win32'">
-    <ClCompile>
-      <AdditionalIncludeDirectories>..\Source;..\..\Source;..\..\..\Source;..;$(HAVOK_THIRDPARTY_DIR)/sdks/win32/FBX/2013.3/include;</AdditionalIncludeDirectories>
-      <AdditionalOptions>
-      </AdditionalOptions>
-      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
-      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <BufferSecurityCheck>false</BufferSecurityCheck>
-      <SDLCheck>false</SDLCheck>
-      <CallingConvention>Cdecl</CallingConvention>
-      <CompileAs>Default</CompileAs>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <DisableSpecificWarnings>
-      </DisableSpecificWarnings>
-      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <EnablePREfast>
-      </EnablePREfast>
-      <ExceptionHandling>false</ExceptionHandling>
-      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
-      <FloatingPointExceptions>false</FloatingPointExceptions>
-      <FloatingPointModel>Fast</FloatingPointModel>
-      <FunctionLevelLinking>false</FunctionLevelLinking>
-      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <MinimalRebuild>false</MinimalRebuild>
-      <ObjectFileName>$(IntDir)</ObjectFileName>
-      <OmitFramePointers>
-      </OmitFramePointers>
-      <Optimization>disabled</Optimization>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <PrecompiledHeaderFile>
-      </PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>$(IntDir)FBXImporter.pch</PrecompiledHeaderOutputFile>
-      <PreprocessorDefinitions>HK_DEBUG;_WINDOWS;WIN32;_WIN32;_CONSOLE;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;;HK_CONFIG_SIMD=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <UndefinePreprocessorDefinitions>
-      </UndefinePreprocessorDefinitions>
-      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <StringPooling>true</StringPooling>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TreatWarningAsError>true</TreatWarningAsError>
-      <WarningLevel>Level4</WarningLevel>
-      <CompileAsManaged>false</CompileAsManaged>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-    </ClCompile>
-    <ResourceCompile>
-      <ResourceOutputFileName>
-      </ResourceOutputFileName>
-      <AdditionalIncludeDirectories>$(IntDir)</AdditionalIncludeDirectories>
-    </ResourceCompile>
-    <Lib>
-      <IgnoreAllDefaultLibraries>
-      </IgnoreAllDefaultLibraries>
-      <AdditionalDependencies>fbxsdk-2013.3-md.lib;WinInet.lib;user32.lib;Advapi32.lib;hkBase.lib;hkCompat.lib;hkSceneData.lib;hkSerialize.lib;hkInternal.lib;hkGeometryUtilities.lib;hkVisualize.lib;hkcdInternal.lib;hkcdCollide.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\Lib\win32_vs2010_anarchy\hybrid_dll;$(HAVOK_THIRDPARTY_DIR)/sdks/win32/FBX/2013.3/lib/vs2010/x86</AdditionalLibraryDirectories>
-      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <UseUnicodeResponseFiles>true</UseUnicodeResponseFiles>
-      <AdditionalOptions> /ignore:4221</AdditionalOptions>
-    </Lib>
-    <Link>
-      <AdditionalDependencies>fbxsdk-2013.3-md.lib;WinInet.lib;user32.lib;Advapi32.lib;hkBase.lib;hkCompat.lib;hkSceneData.lib;hkSerialize.lib;hkInternal.lib;hkGeometryUtilities.lib;hkVisualize.lib;hkcdInternal.lib;hkcdCollide.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\Lib\win32_vs2010_anarchy\hybrid_dll;$(HAVOK_THIRDPARTY_DIR)/sdks/win32/FBX/2013.3/lib/vs2010/x86</AdditionalLibraryDirectories>
-      <AdditionalOptions> /ignore:4221</AdditionalOptions>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ImportLibrary>
-      </ImportLibrary>
-      <AssemblyDebug>
-      </AssemblyDebug>
-      <SubSystem>Console</SubSystem>
-      <ManifestFile>$(IntDir)Manifest$(TargetExt).intermediate.manifest</ManifestFile>
-      <OptimizeReferences>
-      </OptimizeReferences>
-      <EnableCOMDATFolding>
-      </EnableCOMDATFolding>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|win32'">
-    <ClCompile>
-      <AdditionalIncludeDirectories>..\Source;..\..\Source;..\..\..\Source;..;$(HAVOK_THIRDPARTY_DIR)/sdks/win32/FBX/2013.3/include;</AdditionalIncludeDirectories>
-      <AdditionalOptions>
-      </AdditionalOptions>
-      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
-      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <BufferSecurityCheck>false</BufferSecurityCheck>
-      <SDLCheck>false</SDLCheck>
-      <CallingConvention>Cdecl</CallingConvention>
-      <CompileAs>Default</CompileAs>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <DisableSpecificWarnings>
-      </DisableSpecificWarnings>
-      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <EnablePREfast>
-      </EnablePREfast>
-      <ExceptionHandling>false</ExceptionHandling>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <FloatingPointExceptions>false</FloatingPointExceptions>
-      <FloatingPointModel>Fast</FloatingPointModel>
-      <FunctionLevelLinking>false</FunctionLevelLinking>
-      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <MinimalRebuild>false</MinimalRebuild>
-      <ObjectFileName>$(IntDir)</ObjectFileName>
-      <OmitFramePointers>
-      </OmitFramePointers>
-      <Optimization>Full</Optimization>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <PrecompiledHeaderFile>
-      </PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>$(IntDir)FBXImporter.pch</PrecompiledHeaderOutputFile>
-      <PreprocessorDefinitions>_WINDOWS;WIN32;_WIN32;_XT_STATICLINK;NDEBUG;_CONSOLE;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;;HK_CONFIG_SIMD=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <UndefinePreprocessorDefinitions>
-      </UndefinePreprocessorDefinitions>
-      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <StringPooling>true</StringPooling>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TreatWarningAsError>true</TreatWarningAsError>
-      <WarningLevel>Level4</WarningLevel>
-      <CompileAsManaged>false</CompileAsManaged>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-    </ClCompile>
-    <ResourceCompile>
-      <ResourceOutputFileName>
-      </ResourceOutputFileName>
-      <AdditionalIncludeDirectories>$(IntDir)</AdditionalIncludeDirectories>
-    </ResourceCompile>
-    <Lib>
-      <IgnoreAllDefaultLibraries>
-      </IgnoreAllDefaultLibraries>
-      <AdditionalDependencies>fbxsdk-2013.3-mt.lib;WinInet.lib;user32.lib;Advapi32.lib;hkBase.lib;hkCompat.lib;hkSceneData.lib;hkSerialize.lib;hkInternal.lib;hkGeometryUtilities.lib;hkVisualize.lib;hkcdInternal.lib;hkcdCollide.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\Lib\win32_vs2010_anarchy\release;$(HAVOK_THIRDPARTY_DIR)/sdks/win32/FBX/2013.3/lib/vs2010/x86</AdditionalLibraryDirectories>
-      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <UseUnicodeResponseFiles>true</UseUnicodeResponseFiles>
-      <AdditionalOptions> /ignore:4221</AdditionalOptions>
-    </Lib>
-    <Link>
-      <AdditionalDependencies>fbxsdk-2013.3-mt.lib;WinInet.lib;user32.lib;Advapi32.lib;hkBase.lib;hkCompat.lib;hkSceneData.lib;hkSerialize.lib;hkInternal.lib;hkGeometryUtilities.lib;hkVisualize.lib;hkcdInternal.lib;hkcdCollide.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\Lib\win32_vs2010_anarchy\release;$(HAVOK_THIRDPARTY_DIR)/sdks/win32/FBX/2013.3/lib/vs2010/x86</AdditionalLibraryDirectories>
-      <AdditionalOptions> /ignore:4221</AdditionalOptions>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
-      <ImportLibrary>
-      </ImportLibrary>
-      <AssemblyDebug>
-      </AssemblyDebug>
-      <SubSystem>Console</SubSystem>
-      <ManifestFile>$(IntDir)Manifest$(TargetExt).intermediate.manifest</ManifestFile>
-      <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release DLL|win32'">
-    <ClCompile>
-      <AdditionalIncludeDirectories>..\Source;..\..\Source;..\..\..\Source;..;$(HAVOK_THIRDPARTY_DIR)/sdks/win32/FBX/2013.3/include;</AdditionalIncludeDirectories>
-      <AdditionalOptions>
-      </AdditionalOptions>
-      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
-      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <BufferSecurityCheck>false</BufferSecurityCheck>
-      <SDLCheck>false</SDLCheck>
-      <CallingConvention>Cdecl</CallingConvention>
-      <CompileAs>Default</CompileAs>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <DisableSpecificWarnings>
-      </DisableSpecificWarnings>
-      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <EnablePREfast>
-      </EnablePREfast>
-      <ExceptionHandling>false</ExceptionHandling>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <FloatingPointExceptions>false</FloatingPointExceptions>
-      <FloatingPointModel>Fast</FloatingPointModel>
-      <FunctionLevelLinking>false</FunctionLevelLinking>
-      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <MinimalRebuild>false</MinimalRebuild>
-      <ObjectFileName>$(IntDir)</ObjectFileName>
-      <OmitFramePointers>
-      </OmitFramePointers>
-      <Optimization>Full</Optimization>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <PrecompiledHeaderFile>
-      </PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>$(IntDir)FBXImporter.pch</PrecompiledHeaderOutputFile>
-      <PreprocessorDefinitions>_WINDOWS;WIN32;_WIN32;NDEBUG;_CONSOLE;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;;HK_CONFIG_SIMD=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <UndefinePreprocessorDefinitions>
-      </UndefinePreprocessorDefinitions>
-      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <StringPooling>true</StringPooling>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TreatWarningAsError>true</TreatWarningAsError>
-      <WarningLevel>Level4</WarningLevel>
-      <CompileAsManaged>false</CompileAsManaged>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-    </ClCompile>
-    <ResourceCompile>
-      <ResourceOutputFileName>
-      </ResourceOutputFileName>
-      <AdditionalIncludeDirectories>$(IntDir)</AdditionalIncludeDirectories>
-    </ResourceCompile>
-    <Lib>
-      <IgnoreAllDefaultLibraries>
-      </IgnoreAllDefaultLibraries>
-      <AdditionalDependencies>fbxsdk-2013.3-md.lib;WinInet.lib;user32.lib;Advapi32.lib;hkBase.lib;hkCompat.lib;hkSceneData.lib;hkSerialize.lib;hkInternal.lib;hkGeometryUtilities.lib;hkVisualize.lib;hkcdInternal.lib;hkcdCollide.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\Lib\win32_vs2010_anarchy\release_dll;$(HAVOK_THIRDPARTY_DIR)/sdks/win32/FBX/2013.3/lib/vs2010/x86</AdditionalLibraryDirectories>
-      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <UseUnicodeResponseFiles>true</UseUnicodeResponseFiles>
-      <AdditionalOptions> /ignore:4221</AdditionalOptions>
-    </Lib>
-    <Link>
-      <AdditionalDependencies>fbxsdk-2013.3-md.lib;WinInet.lib;user32.lib;Advapi32.lib;hkBase.lib;hkCompat.lib;hkSceneData.lib;hkSerialize.lib;hkInternal.lib;hkGeometryUtilities.lib;hkVisualize.lib;hkcdInternal.lib;hkcdCollide.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\Lib\win32_vs2010_anarchy\release_dll;$(HAVOK_THIRDPARTY_DIR)/sdks/win32/FBX/2013.3/lib/vs2010/x86</AdditionalLibraryDirectories>
-      <AdditionalOptions> /ignore:4221</AdditionalOptions>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
-      <ImportLibrary>
-      </ImportLibrary>
-      <AssemblyDebug>
-      </AssemblyDebug>
-      <SubSystem>Console</SubSystem>
-      <ManifestFile>$(IntDir)Manifest$(TargetExt).intermediate.manifest</ManifestFile>
-      <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-    </Link>
-  </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\FbxToHkxConverter.cpp" />
     <ClCompile Include="..\Source\FbxToHkxConverter_Attributes.cpp" />
@@ -692,31 +221,11 @@
     <ClInclude Include="..\Source\FbxToHkxConverter.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <CodeAnalysisInputAssembly>$(OutputFile)</CodeAnalysisInputAssembly>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisInputAssembly>$(OutputFile)</CodeAnalysisInputAssembly>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dev|win32'">
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <CodeAnalysisInputAssembly>$(OutputFile)</CodeAnalysisInputAssembly>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <CodeAnalysisInputAssembly>$(OutputFile)</CodeAnalysisInputAssembly>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Hybrid DLL|win32'">
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <CodeAnalysisInputAssembly>$(OutputFile)</CodeAnalysisInputAssembly>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|win32'">
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <CodeAnalysisInputAssembly>$(OutputFile)</CodeAnalysisInputAssembly>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release DLL|win32'">
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisInputAssembly>$(OutputFile)</CodeAnalysisInputAssembly>
   </PropertyGroup>

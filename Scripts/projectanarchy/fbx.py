@@ -24,7 +24,15 @@ class HavokScene():
 def export():
 	# Convert FBX to HKT first
 	current_directory = os.path.dirname(os.path.realpath(__file__))
-	fbx_importer = os.path.abspath(os.path.join(current_directory, "..\\..\\exe\\x64_vs2010\\release_dll\\FBXImporter.exe"))
+	
+	root = current_directory
+	while os.path.dirname(root) != root:
+		fbx_importer = os.path.join(root, "Bin\\Tools\\FBXImporter.exe")
+		if os.path.isfile(fbx_importer):
+			break
+		root = os.path.abspath(os.path.join(root, os.pardir) + '\\')
+
+	fbx_importer = os.path.abspath(fbx_importer)
 	if not os.path.exists(fbx_importer):
 		print(fbx_importer)
 		print("Failed to find FBX importer!")
