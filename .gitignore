@@ -4,6 +4,8 @@
 
 *.pyc
 *.exe
+*.spyderworkspace
+*.spyderproject
 __pycache__/
 
 /Blender/*

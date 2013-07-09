@@ -1,8 +1,11 @@
 #
-# Confidential Information of Telekinesys Research Limited (t/a Havok). Not for disclosure or distribution without Havok's
-# prior written consent. This software contains code, techniques and know-how which is confidential and proprietary to Havok.
-# Product and Trade Secret source code contains trade secrets of Havok. Havok Software (C) Copyright 1999-2013 Telekinesys
-# Research Limited t/a Havok. All Rights Reserved. Use of this software is subject to the terms of an end user license agreement.
+# Confidential Information of Telekinesys Research Limited (t/a Havok). Not for
+# disclosure or distribution without Havok's prior written consent. This
+# software contains code, techniques and know-how which is confidential and
+# proprietary to Havok. Product and Trade Secret source code contains trade
+# secrets of Havok. Havok Software (C) Copyright 1999-2013 Telekinesys Research
+# Limited t/a Havok. All Rights Reserved. Use of this software is subject to
+# the terms of an end user license agreement.
 #
 
 import subprocess
@@ -12,73 +15,73 @@ import os
 import msvcrt as m
 
 def print_line(thin = False):
-	if thin:
-		print('-' * 79)
-	else:
-		print('=' * 79)
+    if thin:
+        print('-' * 79)
+    else:
+        print('=' * 79)
 
-	return
+    return
 
 def clear():
-	os.system('cls')
+    os.system('cls')
 
 def wait():
-	print("Press any key to continue...")
-	sys.stdout.flush()
-	m.getch()
+    print("Press any key to continue...")
+    sys.stdout.flush()
+    m.getch()
 
 # Returns true if the script was started by dragging a file onto it
 def is_drag_drop_start():
-	cwd = os.getcwd()
-	drag_drop = False
-	if 'WINDIR' in os.environ:
-		winpath = os.environ['WINDIR']
-		if winpath == cwd:
-			drag_drop = True
-	return drag_drop
+    cwd = os.getcwd()
+    drag_drop = False
+    if 'WINDIR' in os.environ:
+        winpath = os.environ['WINDIR']
+        if winpath == cwd:
+            drag_drop = True
+    return drag_drop
 
 def parse_text(source, label, parse_index=0):
-	index = source.find(label, parse_index)
-	if index == -1:
-		return False
+    index = source.find(label, parse_index)
+    if index == -1:
+        return False
 
-	end = source.find("\n", index)
-	return source[index + len(label) + 1 : end]
+    end = source.find("\n", index)
+    return source[index + len(label) + 1 : end]
 
 def run(arguments, verbose=False, current_directory=""):
-	if current_directory == "":
-		current_directory = os.path.dirname(arguments[0])
+    if current_directory == "":
+        current_directory = os.path.dirname(arguments[0])
 
-	disable_capture = False
-	
-	if disable_capture:
-		child = subprocess.Popen(arguments, cwd=current_directory)
-	else:
-		child = subprocess.Popen(arguments, shell=True, stdout=subprocess.PIPE, cwd=current_directory)
+    disable_capture = False
+    
+    if disable_capture:
+        child = subprocess.Popen(arguments, cwd=current_directory)
+    else:
+        child = subprocess.Popen(arguments, shell=True, stdout=subprocess.PIPE, cwd=current_directory)
 
-	output = ""
+    output = ""
 
-	if disable_capture:
-		child.communicate()
-	else:
-		while True:
-			try:
-				output_character = child.stdout.read(1)
+    if disable_capture:
+        child.communicate()
+    else:
+        while True:
+            try:
+                output_character = child.stdout.read(1)
 
-				# handle the Python 3.0 case where it's returned as a series of bytes
-				if isinstance(output_character, bytes):
-					output_character = output_character.decode("utf-8")
+                # handle the Python 3.0 case where it's returned as a series of bytes
+                if isinstance(output_character, bytes):
+                    output_character = output_character.decode("utf-8")
 
-				if output_character == '' and child.poll() != None:
-					break
+                if output_character == '' and child.poll() != None:
+                    break
 
-				if verbose:
-					sys.stdout.write(output_character)
-					sys.stdout.flush()
+                if verbose:
+                    sys.stdout.write(output_character)
+                    sys.stdout.flush()
 
-				output += output_character;
-			except:
-				# just catch everything and break out of the loop
-				break
+                output += output_character;
+            except:
+                # just catch everything and break out of the loop
+                break
 
-	return output
+    return output
