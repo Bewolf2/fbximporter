@@ -139,6 +139,8 @@ def export():
     return
 
 def export_all():
+    success = False
+
     try:
         # Print the header
         utilities.print_line()
@@ -148,16 +150,13 @@ def export_all():
         # Do the export
         export()
 
-        return 0
+        success = True
     except IOError as error:
         print("I/O error({0}): {1}".format(error[0], error[1]))
         utilities.wait()
-    except ValueError:
-        print("Could not convert data to an integer.")
-        utilities.wait()
     except:
-        print("Unexpected error:", sys.exc_info()[0])
+        print("Unexpected error: %s" % sys.exc_info()[0])
         traceback.print_exc(file=sys.stdout)
         utilities.wait()
 
-    return
+    return success

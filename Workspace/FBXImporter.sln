@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FBXImporter", "FBXImporter_win32_vs2010.vcxproj", "{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}"
 EndProject
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "FBXImporterScripts", "FBXImporterScripts.pyproj", "{33AB9C4E-7C2F-4A73-B5E1-2C83621EE264}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug DLL|Any CPU = Debug DLL|Any CPU
@@ -41,18 +39,6 @@ Global
 		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Release|Mixed Platforms.Build.0 = Dev DLL|win32
 		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Release|win32.ActiveCfg = Dev DLL|win32
 		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Release|win32.Build.0 = Dev DLL|win32
-		{33AB9C4E-7C2F-4A73-B5E1-2C83621EE264}.Debug DLL|Any CPU.ActiveCfg = Debug|Any CPU
-		{33AB9C4E-7C2F-4A73-B5E1-2C83621EE264}.Debug DLL|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{33AB9C4E-7C2F-4A73-B5E1-2C83621EE264}.Debug DLL|win32.ActiveCfg = Debug|Any CPU
-		{33AB9C4E-7C2F-4A73-B5E1-2C83621EE264}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{33AB9C4E-7C2F-4A73-B5E1-2C83621EE264}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{33AB9C4E-7C2F-4A73-B5E1-2C83621EE264}.Debug|win32.ActiveCfg = Debug|Any CPU
-		{33AB9C4E-7C2F-4A73-B5E1-2C83621EE264}.Dev DLL|Any CPU.ActiveCfg = Debug|Any CPU
-		{33AB9C4E-7C2F-4A73-B5E1-2C83621EE264}.Dev DLL|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{33AB9C4E-7C2F-4A73-B5E1-2C83621EE264}.Dev DLL|win32.ActiveCfg = Debug|Any CPU
-		{33AB9C4E-7C2F-4A73-B5E1-2C83621EE264}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{33AB9C4E-7C2F-4A73-B5E1-2C83621EE264}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{33AB9C4E-7C2F-4A73-B5E1-2C83621EE264}.Release|win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
