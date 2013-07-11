@@ -13,8 +13,8 @@ import os
 import utilities
 
 def _getHavokContentToolsPath():
-    havok_tools_root = os.environ['HAVOK_TOOLS_ROOT']
-    if not os.path.exists(havok_tools_root):
+    havok_tools_root = os.environ.get('HAVOK_TOOLS_ROOT')
+    if not os.path.exists(str(havok_tools_root)):
         havok_tools_root = "C:\\Program Files\\Havok\\HavokContentTools"
     if not os.path.exists(havok_tools_root):
         havok_tools_root = "C:\\Program Files (x86)\\Havok\\HavokContentTools"
