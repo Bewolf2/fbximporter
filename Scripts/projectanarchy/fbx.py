@@ -22,133 +22,162 @@ import traceback
 import utilities
 from hct import HCT
 
+
 class HavokScene():
-    def __init__(self):
-        self.initialized = False
+    """
+    Simple class that contains all the data needed to re-export
+    a scene file that could describe an animation or mesh
+    """
+    def __init__(self, sceneFile, filter_set_file, asset_path,
+                 output_path, scene_length, is_root):
+        self.sceneFile = sceneFile
+        self.filter_set_file = filter_set_file
+        self.asset_path = asset_path
+        self.output_path = output_path
+        self.scene_length = scene_length
+        self.is_root = is_root
 
-def export():
-    # Convert FBX to HKT first
-    current_directory = os.path.dirname(os.path.realpath(__file__))
-    
-    root = current_directory
-    while os.path.dirname(root) != root:
-        fbx_importer = os.path.join(root, "Bin\\Tools\\FBXImporter.exe")
-        if os.path.isfile(fbx_importer):
-            break
-        root = os.path.abspath(os.path.join(root, os.pardir) + '\\')
-
-    fbx_importer = os.path.abspath(fbx_importer)
-    if not os.path.exists(fbx_importer):
-        print(fbx_importer)
-        print("Failed to find FBX importer!")
         return
 
-    input_file = os.path.abspath(str(sys.argv[1]))
-    intput_directory = os.path.dirname(input_file)
 
-    print("Converting FBX to Havok Scene Format...")
-    fbx_importer_output = utilities.run([fbx_importer, input_file], True)
+def convert(fbx_file, static_mesh=False, interactive=False, verbose=True):
+    """
+    Takes as input an FBX file and converts it to files that can be
+    used by either Vision or Animation Studio.
+    """
 
-    label_animation_stacks = "Animation stacks:"
-    label_tag_file = "Saved tag file:"
-    label_scene_length = "Scene length:"
-
-    parse_index = fbx_importer_output.find(label_tag_file)
-    if parse_index == -1:
-        print("Conversion to FBX failed!")
-        utilities.print_line()
-        print(fbx_importer_output)
-        return
-
-    havok_content_tools = HCT()
-
-    animationStacks = int(utilities.parse_text(
-        fbx_importer_output,
-        label_animation_stacks))
-    havokScenes = []
-    isRootNode = True
-
-    utilities.print_line()
-    print("Generating Vision / Animation Studio files")
-    utilities.print_line()
-
-    while parse_index >= 0:
-        scene_file = utilities.parse_text(fbx_importer_output, label_tag_file, parse_index)
-        scene_file = os.path.join(intput_directory, scene_file)
-
-        print("Source Havok tag file: %s" % os.path.basename(scene_file))
-
-        (input_file_path, _) = os.path.splitext(scene_file)
-        input_directory = os.path.dirname(scene_file)
-
-        target_filename = os.path.basename(input_file_path)
-        if isRootNode:
-            rootName = target_filename
-        else:
-            animName = target_filename[len(rootName) + 1:]
-
-        if isRootNode and animationStacks > 0:
-            configuration_file = "..\configurations\AnimationRig.hko"
-            target_filename = "%s__out_rig.hkx" % (rootName)
-        elif animationStacks > 0:
-            configuration_file = "..\configurations\Animation.hko"
-            target_filename = "%s__out_anim_%s.hkx" % (rootName, animName)
-        else:
-            configuration_file = "..\configurations\VisionStaticMesh.hko"
-            target_filename = "%s.vmesh" % (rootName)
-
-        configuration_file = os.path.abspath(os.path.join(
-            current_directory,
-            configuration_file))
-        output_configuration_file = os.path.abspath(input_file_path + ".hko")
-
-        with open(output_configuration_file, 'wt') as out:
-            for line in open(configuration_file):
-                out.write(line.replace('$(output)', target_filename))
-        print("Generated Havok configuration file: %s" % os.path.basename(output_configuration_file))
-        print("Target filename: %s" % target_filename)
-        
-        havokScene = HavokScene()
-        havokScene.file = scene_file
-        havokScene.filterSet = output_configuration_file
-        havokScene.assetPath = input_directory
-        havokScene.outputPath = input_directory
-        havokScene.sceneLength = float(utilities.parse_text(
-            fbx_importer_output,
-            label_scene_length,
-            parse_index))
-        havokScenes.append(havokScene)
-
-        havok_content_tools.run(
-            havokScene.file,
-            havokScene.filterSet,
-            havokScene.assetPath,
-            havokScene.outputPath,
-            False
-            )
-
-        isRootNode = False
-
-        # Get the next file
-        parse_index = fbx_importer_output.find(label_tag_file, parse_index + 1)
-
-        utilities.print_line(True)
-
-    print("Conversion complete!")
-
-    return
-
-def export_all():
     success = False
+    
+    # These are the labels that are spit out by the FBX Importer that
+    # we use to parse out the relevant information about the export
+    labelAnimationStacks = "Animation stacks:"
+    labelTagFile = "Saved tag file:"
+    labelSceneLength = "Scene length:"
+
+    def log(message):
+        """ Only print a message if we're in verbose mode """
+        if verbose:
+            print(message)
 
     try:
-        # Print the header
-        utilities.print_line()
-        print("Havok FBX Importer")
-        utilities.print_line()
+        inputFile = os.path.abspath(fbx_file)
+        if not os.path.isfile(inputFile):
+            log("Input file does not exists! [%s]" % fbx_file)
+            return False
+        else:
+            log("Input FBX file: %s" % inputFile)
 
-        # Do the export
-        export()
+        currentDirectory = os.path.dirname(os.path.realpath(__file__))
+
+        root = currentDirectory
+        while os.path.dirname(root) != root:
+            fbxImporter = os.path.join(root, "Bin\\Tools\\FBXImporter.exe")
+            if os.path.isfile(fbxImporter):
+                break
+            root = os.path.abspath(os.path.join(root, os.pardir) + '\\')
+
+        fbxImporter = os.path.abspath(fbxImporter)
+        if not os.path.exists(fbxImporter):
+            log("Failed to find FBX importer!")
+            return False
+
+        inputDirectory = os.path.dirname(inputFile)
+
+        log("Converting FBX to Havok Scene Format...")
+        fbxImporterOutput = utilities.run([fbxImporter, inputFile], verbose)
+
+        parseIndex = fbxImporterOutput.find(labelTagFile)
+        if parseIndex == -1:
+            log("Conversion to FBX failed!")
+            log(utilities.line())
+            print(fbxImporterOutput)
+            return False
+
+        animationStacks = int(utilities.parse_text(
+            fbxImporterOutput,
+            labelAnimationStacks))
+        havokScenes = []
+        isRootNode = True
+        isAnimationExport = (animationStacks > 0) and (not static_mesh)
+
+        # Parse the output of the FBXImporter
+        while parseIndex >= 0:
+            sceneFile = utilities.parse_text(fbxImporterOutput, labelTagFile, parseIndex)
+            sceneFile = os.path.join(inputDirectory, sceneFile)
+
+            (input_file_path, _) = os.path.splitext(sceneFile)
+            target_filename = os.path.basename(input_file_path)
+
+            if isRootNode:
+                rootName = target_filename
+            else:
+                animName = target_filename[len(rootName) + 1:]
+
+            if isRootNode and isAnimationExport:
+                configFile = "..\configurations\AnimationRig.hko"
+                target_filename = "%s__out_rig.hkx" % (rootName)
+            elif isAnimationExport:
+                configFile = "..\configurations\Animation.hko"
+                target_filename = "%s__out_anim_%s.hkx" % (rootName, animName)
+            else:
+                configFile = "..\configurations\VisionStaticMesh.hko"
+                target_filename = "%s.vmesh" % (rootName)
+
+            configFile = os.path.abspath(os.path.join(
+                currentDirectory,
+                configFile))
+            outputConfigFile = os.path.abspath(input_file_path + ".hko")
+
+            with open(outputConfigFile, 'wt') as out:
+                for line in open(configFile):
+                    out.write(line.replace('$(output)', target_filename))
+
+            sceneLength = float(utilities.parse_text(
+                fbxImporterOutput,
+                labelSceneLength,
+                parseIndex))
+
+            havokScene = HavokScene(sceneFile=sceneFile,
+                                    filter_set_file=outputConfigFile,
+                                    asset_path=inputDirectory,
+                                    output_path=inputDirectory,
+                                    scene_length=sceneLength,
+                                    is_root=isRootNode)
+
+            # We accumulate all scenes before actually exporting them
+            havokScenes.append(havokScene)
+
+            # We can break out of the loop early if this is just
+            # a static mesh export
+            if isRootNode and (not isAnimationExport):
+                break
+            else:
+                isRootNode = False
+
+            # Get the next file that was exported
+            parseIndex = fbxImporterOutput.find(labelTagFile,
+                                                   parseIndex + 1)
+
+        log(utilities.line())
+        log("Generating Vision / Animation Studio files")
+        log(utilities.line())
+
+        # Instantiate the Havok Content Tools class so that we can start
+        # using it to convert over the scene files we've just exported
+        havokContentTools = HCT()
+
+        # Now go through each scene and run the standalone filter manager on each one
+        for havokScene in havokScenes:
+            log("Tag file: %s" % os.path.basename(havokScene.sceneFile))
+            log("Filter set: %s" % os.path.basename(outputConfigFile))
+            log("Target name: %s" % target_filename)
+            log(utilities.line(True))
+
+            havokContentTools.run(havokScene.sceneFile,
+                                    havokScene.filter_set_file,
+                                    havokScene.asset_path,
+                                    havokScene.output_path,
+                                    interactive)
 
         success = True
     except IOError as error:

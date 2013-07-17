@@ -14,12 +14,15 @@ import os
 
 import msvcrt as m
 
-def print_line(thin = False):
+def line(thin=False):    
     if thin:
-        print('-' * 79)
+        output = '-' * 79
     else:
-        print('=' * 79)
+        output = '=' * 79
+    return output
 
+def print_line(thin = False):
+    print(line(thin))
     return
 
 def clear():
@@ -30,14 +33,18 @@ def wait():
     sys.stdout.flush()
     m.getch()
 
-# Returns true if the script was started by dragging a file onto it
 def is_drag_drop_start():
+    """
+    Returns true if the script was started by dragging a file onto it
+    """
+
     cwd = os.getcwd()
     drag_drop = False
+
     if 'WINDIR' in os.environ:
         winpath = os.environ['WINDIR']
-        if winpath == cwd:
-            drag_drop = True
+        drag_drop = (winpath == cwd)
+
     return drag_drop
 
 def parse_text(source, label, parse_index=0):

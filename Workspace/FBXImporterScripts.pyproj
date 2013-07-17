@@ -15,13 +15,9 @@
     <Name>FBXImporterScripts</Name>
     <RootNamespace>FBXImporterScripts</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>C:\Projects\Havok\AnarchySDK\Tools\FBXImporter\Samples\Blender\BoxStatic.fbx</CommandLineArguments>
+    <CommandLineArguments>-s C:\Projects\Havok\AnarchySDK\Tools\FBXImporter\Samples\Blender\BoxStatic.fbx</CommandLineArguments>
     <InterpreterPath />
     <InterpreterArguments />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DebugSymbols>true</DebugSymbols>
-    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugSymbols>true</DebugSymbols>

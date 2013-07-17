@@ -9,8 +9,8 @@
 __pycache__/
 
 /Blender/*
-/_backup/*
 /Samples/*
+/_backup/*
 
 start_git.bat
 

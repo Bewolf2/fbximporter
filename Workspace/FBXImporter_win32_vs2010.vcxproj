@@ -220,6 +220,10 @@
   <ItemGroup>
     <ClInclude Include="..\Source\FbxToHkxConverter.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\.gitignore" />
+    <None Include="..\README.md" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">
     <RunCodeAnalysis>false</RunCodeAnalysis>

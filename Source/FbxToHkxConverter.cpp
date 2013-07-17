@@ -146,9 +146,14 @@ bool FbxToHkxConverter::createScenes(FbxScene* fbxScene)
 		m_pose = m_curFbxScene->GetPose(0);
 	}
 
-	hkStringBuf modeller = "FBX [";
-	modeller += fbxScene->GetSceneInfo()->Original_ApplicationName.Get();
-	modeller += "]";
+	hkStringBuf modeller = "FBX";
+	hkStringBuf application = fbxScene->GetSceneInfo()->Original_ApplicationName.Get();
+	if (application.getLength() > 0)
+	{
+		modeller += " [";
+		modeller += application;
+		modeller += "]";
+	}
 
 	if (m_options.m_selectedOnly)
 	{
