@@ -1,5 +1,5 @@
 """
-py2exeUtils - provides an interface to py2exe allowing us to package and distribute scripts
+An interface to py2exe allowing us to package and distribute scripts
 as windows executables.
 """
 
@@ -12,7 +12,7 @@ import shutil
 def makeExe(script, outputExePath=None, keepIntermediates=False, verbose=False):
     """Given a path to a script bundle into an exe with a minimum of options and fuss.
     """
-    importErrStr = "py2exeUtils.py must be called standalone, importing can pollute python environment."
+    importErrStr = "exe.py must be called standalone, importing can pollute python environment."
     assert __name__ == "__main__", importErrStr
     assert os.path.exists(script), "Error: Script %s not found." % script
     scriptDir = os.path.dirname(os.path.abspath(script))
@@ -68,7 +68,7 @@ COMMAND_LINE_OPTIONS = (
 
 
 HELP_STRING = """Compiles a python script to a windows executable (requires Py2exe - http://www.py2exe.org).
-    Usage: py2exeUtils.py -s <script>"""
+    Usage: exe.py -s <script>"""
 
 
 if __name__=="__main__":

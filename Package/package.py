@@ -1,11 +1,5 @@
 """
 Package FBX Convertor for distribution
-TODO
- - Bin\Tools\FBXImporter.exe
- - Tools\FBXImporter\README.md
- - Tools\FBXImporter\Scripts\FBXConverter.exe
- - Tools\FBXImporter\Scripts\configurations\*
-
 """
 
 
