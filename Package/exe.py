@@ -1,3 +1,14 @@
+#! /usr/bin/python
+#
+# Confidential Information of Telekinesys Research Limited (t/a Havok). Not for
+# disclosure or distribution without Havok's prior written consent. This
+# software contains code, techniques and know-how which is confidential and
+# proprietary to Havok. Product and Trade Secret source code contains trade
+# secrets of Havok. Havok Software (C) Copyright 1999-2013 Telekinesys Research
+# Limited t/a Havok. All Rights Reserved. Use of this software is subject to
+# the terms of an end user license agreement.
+#
+
 """
 An interface to py2exe allowing us to package and distribute scripts
 as windows executables.
@@ -10,29 +21,37 @@ import shutil
 
 
 def makeExe(script, outputExePath=None, keepIntermediates=False, verbose=False):
-    """Given a path to a script bundle into an exe with a minimum of options and fuss.
     """
+    Given a path to a script bundle into an exe with a minimum of options and fuss.
+    """
+
     importErrStr = "exe.py must be called standalone, importing can pollute python environment."
+
     assert __name__ == "__main__", importErrStr
     assert os.path.exists(script), "Error: Script %s not found." % script
+
     scriptDir = os.path.dirname(os.path.abspath(script))
     if outputExePath == None:
         outputExePath = os.path.splitext(script)[0] + ".exe"
     os.chdir(scriptDir)
     sys.argv = ['', 'py2exe']
     sys.path.append('.')
+
     from distutils.core import setup
     try:
         import py2exe
     except ImportError:
-        print "ERROR: py2exe not found, please install it."
+        print("ERROR: py2exe not found, please install it.")
         return None
+
     savedStdout = sys.stdout
     if not verbose:
         sys.stdout = open(os.devnull, 'w')
+
     result = setup(console=[os.path.basename(script)],
                    options={'py2exe':{'bundle_files': '1'}},
                    zipfile=None)
+
     if not verbose:
         sys.stdout = savedStdout
     sys.path.pop()
@@ -71,25 +90,29 @@ HELP_STRING = """Compiles a python script to a windows executable (requires Py2e
     Usage: exe.py -s <script>"""
 
 
-if __name__=="__main__":
-    if os.name=="posix":
-        print "Script only supported on Windows."
+if __name__ == "__main__":
+    if os.name == "posix":
+        print("Script only supported on Windows.")
         sys.exit(1)
-    parser = optparse.OptionParser(usage=HELP_STRING)
+
+    PARSER = optparse.OptionParser(usage=HELP_STRING)
     for options in COMMAND_LINE_OPTIONS:
-        parser.add_option(*options[0], **options[1])
-    options, _ = parser.parse_args()
+        PARSER.add_option(*options[0], **options[1])
+    (OPTIONS, _) = PARSER.parse_args()
 
-    result = 0
-    if not options.script:
-        parser.print_help()
+    RESULT = 0
+
+    if not OPTIONS.script:
+        PARSER.print_help()
     else:
-        outputExePath = os.path.abspath(options.outputExePath) if options.outputExePath else None
-        scriptPath = os.path.abspath(options.script)
-        exe = makeExe(scriptPath, outputExePath, options.keepIntermediates, options.verbose)
-        if not os.path.exists(exe):
-            result = 1
-        else:
-            print 'Created %s' % exe
+        EXECUTABLE = makeExe(os.path.abspath(OPTIONS.script),
+                             os.path.abspath(OPTIONS.outputExePath),
+                             OPTIONS.keepIntermediates,
+                             OPTIONS.verbose)
 
-    sys.exit(result)
+        if not os.path.exists(EXECUTABLE):
+            RESULT = 1
+        else:
+            print("Created %s" % EXECUTABLE)
+
+    sys.exit(RESULT)

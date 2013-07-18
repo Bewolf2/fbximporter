@@ -5,6 +5,8 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "FBXImporterScripts", "FBXIm
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FBXImporter", "FBXImporter_win32_vs2010.vcxproj", "{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Package", "Package.pyproj", "{86A7836E-C35F-48EC-881C-4B8E1FF04FBC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug DLL|Any CPU = Debug DLL|Any CPU
@@ -33,6 +35,12 @@ Global
 		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Dev DLL|Mixed Platforms.Build.0 = Dev DLL|win32
 		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Dev DLL|win32.ActiveCfg = Dev DLL|win32
 		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Dev DLL|win32.Build.0 = Dev DLL|win32
+		{86A7836E-C35F-48EC-881C-4B8E1FF04FBC}.Debug DLL|Any CPU.ActiveCfg = Release|Any CPU
+		{86A7836E-C35F-48EC-881C-4B8E1FF04FBC}.Debug DLL|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{86A7836E-C35F-48EC-881C-4B8E1FF04FBC}.Debug DLL|win32.ActiveCfg = Release|Any CPU
+		{86A7836E-C35F-48EC-881C-4B8E1FF04FBC}.Dev DLL|Any CPU.ActiveCfg = Release|Any CPU
+		{86A7836E-C35F-48EC-881C-4B8E1FF04FBC}.Dev DLL|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{86A7836E-C35F-48EC-881C-4B8E1FF04FBC}.Dev DLL|win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

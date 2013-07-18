@@ -1,3 +1,14 @@
+#! /usr/bin/python
+#
+# Confidential Information of Telekinesys Research Limited (t/a Havok). Not for
+# disclosure or distribution without Havok's prior written consent. This
+# software contains code, techniques and know-how which is confidential and
+# proprietary to Havok. Product and Trade Secret source code contains trade
+# secrets of Havok. Havok Software (C) Copyright 1999-2013 Telekinesys Research
+# Limited t/a Havok. All Rights Reserved. Use of this software is subject to
+# the terms of an end user license agreement.
+#
+
 """
 Package FBX Convertor for distribution
 """
@@ -16,19 +27,31 @@ LOGGER = logging.getLogger('fbximporter.package')
 SCRIPT_DIR = os.path.abspath(os.path.dirname(inspect.getfile(inspect.currentframe())))
 PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, os.pardir))
 
+TOOL_NAME = "FbxImporter"
+
+CONVERT_EXECUTABLE = "FbxConverter.exe"
+PREVIEW_EXECUTABLE = "PreviewTool.exe"
+
+CONVERT_EXE_PATH = "Bin/%s" % CONVERT_EXECUTABLE
+PREVIEW_EXE_PATH = "Bin/%s" % PREVIEW_EXECUTABLE
 
 # These paths are relative to the project root
-PY2EXE_PATHS = {"Scripts/convert.py": "Scripts/FBXConverter.exe",
-                "Scripts/preview.py": "Scripts/FBXPreview.exe",}
+PY2EXE_PATHS = {"Scripts/convert.py": CONVERT_EXE_PATH,
+                "Scripts/preview.py": PREVIEW_EXE_PATH}
+
+IGNORE_LIST = ["__pycache__", ".pyc", ".spyderproject", ".suo", ".user"]
 
 # (src, dest) pairs for packaging
 # src is relative to package root, dest is the path in the zip to place the file at.
 # if src is a directory it will be added recursively
-PACKAGE_PATHS = {"README.md": "Tools/FBXImporter/README.md",
-                 "Scripts/configurations": "Tools/FBXImporter/Scripts/configurations",
-                 "Scripts/FBXConverter.exe": "Bin/Tools/FBXConverter.exe",
-                 "Scripts/FBXPreview.exe": "Bin/Tools/FBXPreview.exe",
-                 "Workspace": "Workspace"}
+PACKAGE_PATHS = {"README.md": ("Tools/%s/README.md" % TOOL_NAME),
+                 "Scripts": ("Tools/%s/Scripts" % TOOL_NAME),
+                 #"Scripts/configurations": ("Tools/%s/Scripts/configurations" % TOOL_NAME),
+                 #"Scripts/projectanarchy": ("Tools/%s/Scripts/projectanarchy" % TOOL_NAME),
+                 CONVERT_EXE_PATH: ("Bin/Tools/%s" % CONVERT_EXECUTABLE),
+                 PREVIEW_EXE_PATH: ("Bin/Tools/%s" % PREVIEW_EXECUTABLE),
+                 "../../Bin/Tools/FBXImporter.exe": "Bin/Tools/FbxImporter.exe",
+                 "Workspace": ("Tools/%s/Workspace" % TOOL_NAME)}
 
 
 def getDatestamp():
@@ -52,7 +75,6 @@ def makeExes(verbose):
     Note: exe.py is deliberately called in a seperate process, importing
     the script will cause errors (due to how py2exe works)."""
     for (src, dest) in PY2EXE_PATHS.items():
-        
         cmdTemplate = "python %(exeGenScript)s -s %(src)s -o %(dest)s"
         if verbose:
             cmdTemplate += " -v"
@@ -66,25 +88,43 @@ def makeExes(verbose):
 
 
 def makePackage(packagePath):
-    """Iterate over the src,dest pairs in PACKAGE_PATHS adding to zip.
+    """
+    Iterate over the src,dest pairs in PACKAGE_PATHS adding to zip.
     Note: exe.py is deliberately called in a seperate process, importing
-    the script will cause errors (due to how py2exe works)."""
+    the script will cause errors (due to how py2exe works).
+    """
 
     packageZip = zipfile.ZipFile(packagePath, 'w')
 
     def addFileToZip(src, dest):
+        """Adds 'src' file to zip file at 'dest'"""
         LOGGER.info("Add to zip: %s (%s)", src, dest)
-        packageZip.write(src, dest)
+        try:
+            packageZip.write(src, dest)
+        except:
+            LOGGER.error("Failed to add [%s] to zip file." % src)
+
+    def ignoreFile(filename):
+        """
+        Go through the global ignore list and return True if the filename
+        includes text from any of them
+        """
+        for ignore in IGNORE_LIST:
+            if ignore in filename:
+                return True
+        return False
 
     for (src, dest) in PACKAGE_PATHS.items():
-        absSrc = os.path.join(PROJECT_ROOT, src)
+        absSrc = os.path.abspath(os.path.join(PROJECT_ROOT, src))
         if os.path.isfile(absSrc):
             addFileToZip(os.path.join(PROJECT_ROOT, src), dest)
         elif os.path.isdir(absSrc):
-            for (dirpath, dirnames, filenames) in os.walk(absSrc):
-                for f in filenames:
-                    relDest = os.path.normpath(os.path.join(dest, dirpath.replace(absSrc, ''), f))
-                    addFileToZip(os.path.join(dirpath, f), relDest)
+            for (dirpath, __, filenames) in os.walk(absSrc):
+                for filename in filenames:
+                    if not ignoreFile(filename):
+                        relDest = "%s/%s/%s" % (dest, dirpath.replace(absSrc, ''), filename)
+                        relDest = os.path.normpath(relDest)
+                        addFileToZip(os.path.join(dirpath, filename), relDest)
         else:
             LOGGER.error("Package path %s cannot be found." % src)
 
@@ -98,19 +138,23 @@ def main(packagePath, verbose=False):
     Final package is placed at 'packagePath'
     """
     LOGGER.info("FBX Importer Packaging")
+
     try:
         makeExes(verbose)
         makePackage(packagePath)
     except:
         LOGGER.exception("Packaging failed")
         return 1
+
     return 0
 
-
+# Define the command line options. Need to put this after getDatestamp
+# is defined.
+PACKAGE = 'ProjectAnarchy_FbxImporter_%s.zip' % getDatestamp()
 COMMAND_LINE_OPTIONS = (
     (('-p', '--pkg-path'), {'action': 'store',
                             'dest': 'packagePath',
-                            'default': os.path.join(PROJECT_ROOT, 'ProjectAnarchy_FbxImporter_%s.zip' % getDatestamp()),
+                            'default': os.path.join(PROJECT_ROOT, PACKAGE),
                             'help': 'Output package path and name. [default: %default]'}),
     (('-v', '--verbose'), {'action': 'store_true',
                            'dest': 'verbose',
@@ -120,11 +164,15 @@ COMMAND_LINE_OPTIONS = (
 
 if __name__ == '__main__':
     from optparse import OptionParser
-    parser = OptionParser("Usage: package.py [-p packagepath] [-v]")
+
+    PARSER = OptionParser("Usage: package.py [-p packagepath] [-v]")
     for options in COMMAND_LINE_OPTIONS:
-        parser.add_option(*options[0], **options[1])
-    (options, argv) = parser.parse_args()
+        PARSER.add_option(*options[0], **options[1])
+    (OPTIONS, _) = PARSER.parse_args()
+
     setupLogging()
-    result = main(options.packagePath, options.verbose)
+
+    RESULT = main(OPTIONS.packagePath, OPTIONS.verbose)
     LOGGER.info("Done")
-    sys.exit(result)
+
+    sys.exit(RESULT)

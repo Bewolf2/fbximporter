@@ -2,6 +2,7 @@
 ## Anarchy SDK files to ignore
 ##
 
+*.zip
 *.pyc
 *.exe
 *.spyderworkspace
@@ -11,6 +12,7 @@ __pycache__/
 /Blender/*
 /Samples/*
 /_backup/*
+/Bin/*
 
 start_git.bat
 
