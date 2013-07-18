@@ -86,7 +86,7 @@ def run(arguments, verbose=False, current_directory=""):
                     sys.stdout.write(output_character)
                     sys.stdout.flush()
 
-                output += output_character;
+                output += output_character
             except:
                 # just catch everything and break out of the loop
                 break

@@ -24,12 +24,5 @@
     <Compile Include="exe.py" />
     <Compile Include="package.py" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Workspace\FBXImporter_win32_vs2010.vcxproj">
-      <Name>FBXImporter</Name>
-      <Project>{ac889cf8-cf1d-4938-b6e2-37692d8f5c2f}</Project>
-      <Private>False</Private>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
 </Project>

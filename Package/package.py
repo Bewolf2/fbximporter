@@ -22,18 +22,23 @@ import zipfile
 import time
 import subprocess
 
+# We define this first as some global constants use it
+def getDatestamp():
+    """Get local datestamp"""
+    return "%02i%02i%02i" % time.localtime()[0:3]
+
 LOGGER = logging.getLogger('fbximporter.package')
 
 SCRIPT_DIR = os.path.abspath(os.path.dirname(inspect.getfile(inspect.currentframe())))
 PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, os.pardir))
 
-TOOL_NAME = "FbxImporter"
+TOOL_NAME = "FBXImporter"
 
-CONVERT_EXECUTABLE = "FbxConverter.exe"
+CONVERT_EXECUTABLE = "FBXConverter.exe"
 PREVIEW_EXECUTABLE = "PreviewTool.exe"
 
-CONVERT_EXE_PATH = "Bin/%s" % CONVERT_EXECUTABLE
-PREVIEW_EXE_PATH = "Bin/%s" % PREVIEW_EXECUTABLE
+CONVERT_EXE_PATH = "../../Bin/Tools/%s" % (CONVERT_EXECUTABLE)
+PREVIEW_EXE_PATH = "../../Bin/Tools/%s" % (PREVIEW_EXECUTABLE)
 
 # These paths are relative to the project root
 PY2EXE_PATHS = {"Scripts/convert.py": CONVERT_EXE_PATH,
@@ -46,17 +51,25 @@ IGNORE_LIST = ["__pycache__", ".pyc", ".spyderproject", ".suo", ".user"]
 # if src is a directory it will be added recursively
 PACKAGE_PATHS = {"README.md": ("Tools/%s/README.md" % TOOL_NAME),
                  "Scripts": ("Tools/%s/Scripts" % TOOL_NAME),
-                 #"Scripts/configurations": ("Tools/%s/Scripts/configurations" % TOOL_NAME),
-                 #"Scripts/projectanarchy": ("Tools/%s/Scripts/projectanarchy" % TOOL_NAME),
+                 "Source": ("Tools/%s/Source" % TOOL_NAME),
                  CONVERT_EXE_PATH: ("Bin/Tools/%s" % CONVERT_EXECUTABLE),
                  PREVIEW_EXE_PATH: ("Bin/Tools/%s" % PREVIEW_EXECUTABLE),
-                 "../../Bin/Tools/FBXImporter.exe": "Bin/Tools/FbxImporter.exe",
+                 ("Bin/%s.exe" % TOOL_NAME): ("Tools/%s/Bin/%s.exe" % (TOOL_NAME, TOOL_NAME)),
                  "Workspace": ("Tools/%s/Workspace" % TOOL_NAME)}
 
-
-def getDatestamp():
-    """Get local datestamp"""
-    return "%02i%02i%02i" % time.localtime()[0:3]
+# Define the command line options. Need to put this after getDatestamp
+# is defined.
+PACKAGE = "Package/Output/ProjectAnarchy_FBXImporter_%s.zip" % getDatestamp()
+COMMAND_LINE_OPTIONS = (
+    (('-p', '--pkg-path'), {'action': 'store',
+                            'dest': 'packagePath',
+                            'default': os.path.join(PROJECT_ROOT, PACKAGE),
+                            'help': 'Output package path and name. [default: %default]'}),
+    (('-v', '--verbose'), {'action': 'store_true',
+                           'dest': 'verbose',
+                           'default': False,
+                           'help': 'Enable verbose output. [default: %default]'}),
+    )
 
 
 def setupLogging():
@@ -148,19 +161,6 @@ def main(packagePath, verbose=False):
 
     return 0
 
-# Define the command line options. Need to put this after getDatestamp
-# is defined.
-PACKAGE = 'ProjectAnarchy_FbxImporter_%s.zip' % getDatestamp()
-COMMAND_LINE_OPTIONS = (
-    (('-p', '--pkg-path'), {'action': 'store',
-                            'dest': 'packagePath',
-                            'default': os.path.join(PROJECT_ROOT, PACKAGE),
-                            'help': 'Output package path and name. [default: %default]'}),
-    (('-v', '--verbose'), {'action': 'store_true',
-                           'dest': 'verbose',
-                           'default': False,
-                           'help': 'Enable verbose output. [default: %default]'}),
-    )
 
 if __name__ == '__main__':
     from optparse import OptionParser

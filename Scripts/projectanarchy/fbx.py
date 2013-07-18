@@ -69,17 +69,26 @@ def convert(fbx_file, static_mesh=False, interactive=False, verbose=True):
 
         currentDirectory = os.path.dirname(os.path.realpath(__file__))
 
-        root = currentDirectory
-        while os.path.dirname(root) != root:
-            fbxImporter = os.path.join(root, "Bin\\Tools\\FBXImporter.exe")
-            if os.path.isfile(fbxImporter):
-                break
-            root = os.path.abspath(os.path.join(root, os.pardir) + '\\')
+        # If this is a compiled script, then this is going to be 'Tools\FBXImporter.exe\projectanarchy' so
+        # it needs some special processing to make it a valid folder
+        if '.exe' in currentDirectory:
+            extensionIndex = currentDirectory.find('.exe')
+            endSlashIndex = currentDirectory.rfind('\\', 0, extensionIndex)
+            currentDirectory = currentDirectory[0:endSlashIndex]
+
+        root = os.path.join(currentDirectory, "../../Tools/FBXImporter")
+        fbxImporter = os.path.join(root, "Bin/FBXImporter.exe")
+        if not os.path.isfile(fbxImporter):
+            root = os.path.join(currentDirectory, "../../")
+            fbxImporter = os.path.join(root, "Bin/FBXImporter.exe")
 
         fbxImporter = os.path.abspath(fbxImporter)
         if not os.path.exists(fbxImporter):
             log("Failed to find FBX importer!")
-            return False
+            return False     
+
+        # Save
+        configPath = os.path.abspath(os.path.join(root, "Scripts/configurations"))
 
         inputDirectory = os.path.dirname(inputFile)
 
@@ -114,13 +123,13 @@ def convert(fbx_file, static_mesh=False, interactive=False, verbose=True):
                 animName = target_filename[len(rootName) + 1:]
 
             if isRootNode and isAnimationExport:
-                configFile = "..\configurations\AnimationRig.hko"
+                configFile = os.path.join(configPath, "AnimationRig.hko")
                 target_filename = "%s__out_rig.hkx" % (rootName)
             elif isAnimationExport:
-                configFile = "..\configurations\Animation.hko"
+                configFile = os.path.join(configPath, "Animation.hko")
                 target_filename = "%s__out_anim_%s.hkx" % (rootName, animName)
             else:
-                configFile = "..\configurations\VisionStaticMesh.hko"
+                configFile = os.path.join(configPath, "VisionStaticMesh.hko")
                 target_filename = "%s.vmesh" % (rootName)
 
             configFile = os.path.abspath(os.path.join(
@@ -182,6 +191,7 @@ def convert(fbx_file, static_mesh=False, interactive=False, verbose=True):
         success = True
     except IOError as error:
         print("I/O error({0}): {1}".format(error[0], error[1]))
+        traceback.print_exc(file=sys.stdout)
         utilities.wait()
     except:
         print("Unexpected error: %s" % sys.exc_info()[0])
