@@ -35,6 +35,11 @@ COMMAND_LINE_OPTIONS = (
       'dest': 'verbose',
       'default': True,
       'help': "Don't print out status updates"}),
+    (('-m', '--model'),
+     {'action': 'store_true',
+      'dest': 'outputVisionModel',
+      'default': False,
+      'help': 'Output a Vision Model file (does NOT include animations!)'}),
     (('-s', '--static-mesh'),
      {'action': 'store_true',
       'dest': 'outputStaticMesh',
@@ -70,6 +75,7 @@ def main():
         success = projectanarchy.fbx.convert(
             fbx_file=fbx_file,
             static_mesh=options.outputStaticMesh,
+            vision_model=options.outputVisionModel,
             interactive=options.interactive,
             verbose=options.verbose)
 

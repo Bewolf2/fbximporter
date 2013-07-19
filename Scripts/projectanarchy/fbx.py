@@ -40,14 +40,18 @@ class HavokScene():
         return
 
 
-def convert(fbx_file, static_mesh=False, interactive=False, verbose=True):
+def convert(fbx_file,
+            static_mesh=False,
+            vision_model=False,
+            interactive=False,
+            verbose=True):
     """
     Takes as input an FBX file and converts it to files that can be
     used by either Vision or Animation Studio.
     """
 
     success = False
-    
+
     # These are the labels that are spit out by the FBX Importer that
     # we use to parse out the relevant information about the export
     labelAnimationStacks = "Animation stacks:"
@@ -85,7 +89,7 @@ def convert(fbx_file, static_mesh=False, interactive=False, verbose=True):
         fbxImporter = os.path.abspath(fbxImporter)
         if not os.path.exists(fbxImporter):
             log("Failed to find FBX importer!")
-            return False     
+            return False
 
         # Save
         configPath = os.path.abspath(os.path.join(root, "Scripts/configurations"))
@@ -122,7 +126,10 @@ def convert(fbx_file, static_mesh=False, interactive=False, verbose=True):
             else:
                 animName = target_filename[len(rootName) + 1:]
 
-            if isRootNode and isAnimationExport:
+            if vision_model:
+                configFile = os.path.join(configPath, "VisionModel.hko")
+                target_filename = "%s.model" % (rootName)
+            elif isRootNode and isAnimationExport:
                 configFile = os.path.join(configPath, "AnimationRig.hko")
                 target_filename = "%s__out_rig.hkx" % (rootName)
             elif isAnimationExport:
@@ -158,7 +165,7 @@ def convert(fbx_file, static_mesh=False, interactive=False, verbose=True):
 
             # We can break out of the loop early if this is just
             # a static mesh export
-            if isRootNode and (not isAnimationExport):
+            if isRootNode and ((not isAnimationExport) or vision_model):
                 break
             else:
                 isRootNode = False

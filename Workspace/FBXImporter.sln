@@ -8,15 +8,9 @@ Global
 		Debug DLL|Any CPU = Debug DLL|Any CPU
 		Debug DLL|Mixed Platforms = Debug DLL|Mixed Platforms
 		Debug DLL|win32 = Debug DLL|win32
-		Debug|Any CPU = Debug|Any CPU
-		Debug|Mixed Platforms = Debug|Mixed Platforms
-		Debug|win32 = Debug|win32
 		Dev DLL|Any CPU = Dev DLL|Any CPU
 		Dev DLL|Mixed Platforms = Dev DLL|Mixed Platforms
 		Dev DLL|win32 = Dev DLL|win32
-		Release|Any CPU = Release|Any CPU
-		Release|Mixed Platforms = Release|Mixed Platforms
-		Release|win32 = Release|win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Debug DLL|Any CPU.ActiveCfg = Debug DLL|win32
@@ -24,21 +18,11 @@ Global
 		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Debug DLL|Mixed Platforms.Build.0 = Debug DLL|win32
 		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Debug DLL|win32.ActiveCfg = Dev DLL|win32
 		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Debug DLL|win32.Build.0 = Dev DLL|win32
-		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Debug|Any CPU.ActiveCfg = Debug DLL|win32
-		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Debug|Mixed Platforms.ActiveCfg = Debug DLL|win32
-		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Debug|Mixed Platforms.Build.0 = Debug DLL|win32
-		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Debug|win32.ActiveCfg = Debug DLL|win32
-		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Debug|win32.Build.0 = Debug DLL|win32
 		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Dev DLL|Any CPU.ActiveCfg = Dev DLL|win32
 		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Dev DLL|Mixed Platforms.ActiveCfg = Dev DLL|win32
 		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Dev DLL|Mixed Platforms.Build.0 = Dev DLL|win32
 		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Dev DLL|win32.ActiveCfg = Dev DLL|win32
 		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Dev DLL|win32.Build.0 = Dev DLL|win32
-		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Release|Any CPU.ActiveCfg = Dev DLL|win32
-		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Release|Mixed Platforms.ActiveCfg = Dev DLL|win32
-		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Release|Mixed Platforms.Build.0 = Dev DLL|win32
-		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Release|win32.ActiveCfg = Dev DLL|win32
-		{AC889CF8-CF1D-4938-B6E2-37692D8F5C2F}.Release|win32.Build.0 = Dev DLL|win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

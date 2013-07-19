@@ -20,18 +20,23 @@ Dependencies
 * [Python 2.7.X][2]
 * [FBX SDK 2013.3][4] - **We will be upgrading to 2014.1 soon!**
 * [Python Tools for Visual Studio][5] - Useful for debugging your projects and we include a .pyproj/.sln so you'll need to have it installed to successfully open the solution.
+* [py2exe][6] - Needed if you're going to create a package
 
-Setup
------
+Compiling
+---------
 
 1. Install the Project Anarchy SDK from the [homepage][3]
     * Make sure the content tools and SDK are checked for install
+2. Install [FBX SDK 2013.3][4]
 2. Git clone the repository into **$(AnarchySDK)\Tools\FBXImporter**
     * ```git clone https://github.com/projectanarchy/fbximporter.git FBXImporter```
 3. Open **$(AnarchySDK)\Tools\FBXImporter\Workspace\FBXImporter.sln**
-    * Build the project. This will output an executable to: **$(AnarchySDK)\Bin\Tools\FBXImporter.exe**
+    * Build the project using **Dev DLL** Configuration. This will output an executable to: **$(AnarchySDK)\Bin\Tools\FBXImporter.exe**
 4. Now you can drag/drop an FBX file onto the Python convert script:
     * **$(AnarchySDK)\Tools\FBXImporter\Scripts\convert.py**
+
+Usage
+-----
 
 The following sections describe what files get generated for the particular kind of FBX asset. For all generated assets, there will be a cooresponding HKO file that contains the filter set used to generate the file. These are passed in to the Havok Content Tools standalone filter manager (**hctStandAloneFilterManager.exe**). For example, if you would like to re-generate the StaticBox example below:
 
@@ -41,8 +46,20 @@ If you want to edit the filters manually, you can add the **interactive mode** w
 
 ```hctStandAloneFilterManager.exe -i -s StaticBox.hko StaticBox.hkt```
 
-***
-### Static Mesh
+### Command Line Options
+
+- *convert.py* [options] input_file.fbx
+- *FBXConverter.exe* [options] input_file.fbx
+
+Options:
+
+- -h, --help: Show help message and exit
+- -i, --interactive: Use interactive mode which will bring up the standalone filter manager
+- -q, --quiet: Don't print out status updates
+- -m, --model: Output a Vision Model file (does NOT include animations!)
+- -s, --static-mesh: Forces it to output a static mesh and not a model with animation
+
+### Static Mesh (Vision)
 
 If you have an FBX file named **StaticBox.fbx** that has no animations, passing it to **convert.py** will generate the following files:
 
@@ -50,8 +67,19 @@ If you have an FBX file named **StaticBox.fbx** that has no animations, passing 
 - ```StaticBox.hkt```
 - ```StaticBox.hko``` - The configuration (filter set) that's passed to the filter tools.
 
-***
-### Animated Model
+Some packages, like Blender, will always export an animation stack which will make the converter think that it's an animation. To force it to output a static mesh, pass '-s' or '--static-mesh' as a parameter to the converter.
+
+### Model (Vision)
+
+If you have an FBX file named **StaticBox.fbx**, passing it to **convert.py** along with the '-m' or '--model' command line parameter will generate the following files:
+
+- ```StaticBox.model```
+- ```StaticBox.hkt```
+- ```StaticBox.hko``` - The configuration (filter set) that's passed to the filter tools.
+
+**NOTE: Model files to NOT support animations at this time!**
+
+### Animation Studio
 
 If you have an FBX file named **AnimatedBox.fbx** that has one animation named *Anim1*, passing this to **convert.py** will generate the following files:
 
@@ -78,3 +106,4 @@ license is included with this software and is also available from salesteam@havo
 [3]: http://www.projectanarchy.com/download
 [4]: http://usa.autodesk.com/adsk/servlet/pc/item?siteID=123112&id=10775892
 [5]: http://pytools.codeplex.com/
+[6]: http://www.py2exe.org/
