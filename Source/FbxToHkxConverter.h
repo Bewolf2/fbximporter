@@ -51,8 +51,13 @@ public:
 	void saveScenes(const char *path, const char *name);
 
 private:
-	static unsigned floatsToARGB(const float r, const float g, const float b, const float a = 1.0f);
-	template<typename FbxMatrixType> static void convertFbxXMatrixToMatrix4(const FbxMatrixType& fbxMatrix, hkMatrix4& matrix)
+
+	//---- static declarations
+	
+	static FbxAMatrix convertMatrix(const FbxMatrix& mat);
+
+	template<typename FbxMatrixType>
+	static void convertFbxXMatrixToMatrix4(const FbxMatrixType& fbxMatrix, hkMatrix4& matrix)
 	{
 		FbxVector4 v0 = fbxMatrix.GetRow(0);
 		FbxVector4 v1 = fbxMatrix.GetRow(1);
@@ -67,7 +72,25 @@ private:
 		matrix.setCols(c0,c1,c2,c3);
 	}
 
-	static void fillBuffers(FbxMesh* pMesh, FbxNode* originalNode, hkxVertexBuffer* newVB, hkxIndexBuffer* newIB, const hkArray<float>& skinControlPointWeights, const hkArray<int>& skinIndicesToClusters);
+	static void fillBuffers(
+		FbxMesh* pMesh,
+		FbxNode* originalNode,
+		hkxVertexBuffer* newVB,
+		hkxIndexBuffer* newIB,
+		const hkArray<float>& skinControlPointWeights,
+		const hkArray<int>& skinIndicesToClusters);
+	static void findChildren(FbxNode* root, hkArray<FbxNode*>& children, FbxNodeAttribute::EType type);
+
+	// Get the global position of the node for the current pose.
+	// If the specified node is not part of the pose or no pose is specified, get its
+	// global position at the current time.
+	static FbxAMatrix getGlobalPosition(
+		FbxNode* pNode,
+		const FbxTime& pTime,
+		FbxPose* pPose,
+		FbxAMatrix* pParentGlobalPosition = NULL);
+
+	//---- declarations
 
 	void clear();
 
@@ -79,24 +102,56 @@ private:
 	void addSpline(hkxScene *scene, FbxNode* splineNode, hkxNode* node);
 	hkxMaterial* createMaterial(hkxScene *scene, FbxMesh* pMesh);
 
-	void extractKeyFramesAndAnnotations(FbxNode* fbxChildNode, hkxNode* newChildNode, int animStackIndex);
+	void extractKeyFramesAndAnnotations(hkxScene *scene, FbxNode* fbxChildNode, hkxNode* newChildNode, int animStackIndex);
 
 	// Convert an FBX texture into a Havok texture type. This might return the cached result from a prior conversion.
-	hkReferencedObject* convertTexture(hkxScene *scene, FbxSurfaceMaterial* material, const FbxStringList& uvSetNames, hkxMaterial* mat, const char* fbxTextureType, int& uvSetIndex);
+	hkReferencedObject* convertTexture(
+		hkxScene *scene,
+		FbxSurfaceMaterial* material,
+		const FbxStringList& uvSetNames,
+		hkxMaterial* mat,
+		const char* fbxTextureType,
+		int& uvSetIndex);
 
-	void convertTextures(hkxScene *scene, FbxSurfaceMaterial* fbxMat, const FbxStringList& uvSetNames, hkxMaterial* mat);
-	void convertTexture(hkxScene *scene, FbxSurfaceMaterial* fbxMat, const FbxStringList& uvSetNames, hkxMaterial* mat, const char* textureTypeName, hkxMaterial::TextureType textureType);
+	void convertTextures(
+		hkxScene *scene,
+		FbxSurfaceMaterial* fbxMat,
+		const FbxStringList& uvSetNames,
+		hkxMaterial* mat);
+	void convertTexture(
+		hkxScene *scene,
+		FbxSurfaceMaterial* fbxMat,
+		const FbxStringList& uvSetNames,
+		hkxMaterial* mat,
+		const char* textureTypeName,
+		hkxMaterial::TextureType textureType);
 	
-	void addSampledNodeAttributeGroups(hkxScene *scene, int animStackIndex, FbxObject* fbxObject, hkxAttributeHolder* hkx_attributeHolder, bool recurse = true);
-	bool createAndSampleAttribute(hkxScene *scene, int animStackIndex, FbxProperty& property, hkxAttribute& hkx_attribute);
+	void addSampledNodeAttributeGroups(
+		hkxScene *scene,
+		int animStackIndex,
+		FbxObject* fbxObject,
+		hkxAttributeHolder* hkx_attributeHolder,
+		bool recurse = true);
+	bool createAndSampleAttribute(
+		hkxScene *scene,
+		int animStackIndex,
+		FbxProperty& property,
+		hkxAttribute& hkx_attribute);
+
+	//---- member variables
 
 	Options m_options;
 
 	hkArray<hkxScene*> m_scenes;
 	FbxScene *m_curFbxScene;
 	FbxPose *m_pose;
+	hkStringBuf m_modeller;
+	int m_numAnimStacks;
+	int m_numBones;
+	FbxTime m_startTime;
+	FbxNode *m_rootNode;
 
-	// A cache of converted FBX->Havok textures
+	// A cache of converted FBX -> Havok textures
 	hkPointerMap<FbxTexture*, hkRefVariant*> m_convertedTextures;
 };
 

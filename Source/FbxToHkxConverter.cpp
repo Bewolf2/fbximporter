@@ -22,11 +22,6 @@
 #include <Common/Base/Ext/hkBaseExt.h>
 #include <Common/Base/Fwd/hkwindows.h>
 
-// Get the global position of the node for the current pose.
-// If the specified node is not part of the pose or no pose is specified, get its
-// global position at the current time.
-FbxAMatrix GetGlobalPosition(FbxNode* pNode, const FbxTime& pTime = FBXSDK_TIME_INFINITE, FbxPose* pPose = NULL, FbxAMatrix* pParentGlobalPosition = NULL);
-
 // Get the matrix of the given pose
 FbxAMatrix GetPoseMatrix(FbxPose* pPose, int pNodeIndex);
 
@@ -79,6 +74,8 @@ void FbxToHkxConverter::clear()
 
 void FbxToHkxConverter::saveScenes(const char *path, const char *name)
 {
+	printf("Output path: %s\n", path);
+
 	for (int sceneIndex = 0; sceneIndex < m_scenes.getSize(); sceneIndex++)
 	{
 		hkxScene *scene = m_scenes[sceneIndex];
@@ -140,20 +137,17 @@ bool FbxToHkxConverter::createScenes(FbxScene* fbxScene)
 	clear();
 
 	m_curFbxScene = fbxScene;
+	m_rootNode = m_curFbxScene->GetRootNode();
 
-	if ( m_curFbxScene->GetPoseCount() > 0 )
-	{
-		m_pose = m_curFbxScene->GetPose(0);
-	}
-
-	hkStringBuf modeller = "FBX";
+	m_modeller = "FBX";
 	hkStringBuf application = fbxScene->GetSceneInfo()->Original_ApplicationName.Get();
 	if (application.getLength() > 0)
 	{
-		modeller += " [";
-		modeller += application;
-		modeller += "]";
+		m_modeller += " [";
+		m_modeller += application;
+		m_modeller += "]";
 	}
+	printf("Modeller: %s\n", m_modeller.cString());
 
 	if (m_options.m_selectedOnly)
 	{
@@ -165,14 +159,33 @@ bool FbxToHkxConverter::createScenes(FbxScene* fbxScene)
 		printf("Exporting Visible Only\n");
 	}
 
-	const int fbxAnimStacks = m_curFbxScene->GetSrcObjectCount<FbxAnimStack>();
+	hkArray<FbxNode*> boneNodes;
+	findChildren(m_rootNode, boneNodes, FbxNodeAttribute::eSkeleton);
+	m_numBones = boneNodes.getSize();
+	printf("Bones: %d\n", m_numBones);
 
-	printf("Modeller: %s\n", modeller.cString());
-	printf("Animation stacks: %d\n", fbxAnimStacks);
+	const int poseCount = m_curFbxScene->GetPoseCount();
+	if (poseCount > 0)
+	{
+		m_pose = m_curFbxScene->GetPose(0);
+		printf("Pose Elements: %d\n", m_pose->GetCount());		
+	}
+
+	m_numAnimStacks = m_curFbxScene->GetSrcObjectCount<FbxAnimStack>();
+	if (m_numAnimStacks > 0)
+	{
+		const FbxAnimStack* lAnimStack = m_curFbxScene->GetSrcObject<FbxAnimStack>(0);
+		const FbxTimeSpan animTimeSpan = lAnimStack->GetLocalTimeSpan();
+		FbxTime timePerFrame; timePerFrame.SetTime(0, 0, 0, 1, 0, m_curFbxScene->GetGlobalSettings().GetTimeMode());
+		m_startTime = animTimeSpan.GetStart();
+	}
+	printf("Animation stacks: %d\n", m_numAnimStacks);
 
 	createSceneStack(-1);
 
-	for (int animStackIndex = 0; animStackIndex < fbxAnimStacks; animStackIndex++)
+	for (int animStackIndex = 0;
+		 animStackIndex < m_numAnimStacks && m_numBones > 0;
+		 animStackIndex++)
 	{
 		createSceneStack(animStackIndex);
 	}
@@ -183,27 +196,36 @@ bool FbxToHkxConverter::createScenes(FbxScene* fbxScene)
 // This method is templated on the implementation of hctMayaSceneExporter/hctMaxSceneExporter::createScene()
 bool FbxToHkxConverter::createSceneStack(int animStackIndex)
 {
-	hkStringBuf modeller = "FBX";
-	const char *application = m_curFbxScene->GetSceneInfo()->Original_ApplicationName.Get();
-	if ( hkString::strLen(application) > 0 )
-	{
-		modeller += " [";
-		modeller += application;
-		modeller += "]";
-	}
-	
 	hkxScene *scene = new hkxScene;
 
-	scene->m_modeller.set(modeller.cString());
+	scene->m_modeller.set(m_modeller.cString());
 	scene->m_asset = m_curFbxScene->GetSceneInfo()->Original_FileName.Get();
 
-	FbxNode* fbxRootNode = m_curFbxScene->GetRootNode();
-	if (fbxRootNode) 
+	if (m_rootNode) 
 	{
 		// create root node
 		hkxNode* rootNode = new hkxNode;
+		bool rigPass = (animStackIndex == -1);
+		int currentAnimStackIndex = -1;
 
-		if (animStackIndex == -1)
+		FbxAnimStack* lAnimStack = NULL;
+		
+		if (rigPass && m_numAnimStacks > 0)
+		{
+			currentAnimStackIndex = 0;
+		}
+		else if (animStackIndex >= 0)
+		{
+			currentAnimStackIndex = animStackIndex;
+		}
+		
+		if (currentAnimStackIndex != -1)
+		{
+			lAnimStack = m_curFbxScene->GetSrcObject<FbxAnimStack>(currentAnimStackIndex);
+			m_curFbxScene->GetEvaluator()->SetContext(lAnimStack);
+		}
+
+		if (rigPass)
 		{
 			rootNode->m_name = "ROOT_NODE";
 			scene->m_sceneLength = 0.f;
@@ -212,15 +234,10 @@ bool FbxToHkxConverter::createSceneStack(int animStackIndex)
 		}
 		else
 		{
-			FbxAnimStack* lAnimStack = m_curFbxScene->GetSrcObject<FbxAnimStack>(animStackIndex);
-
-			// Set the current evaluator to the right context
-			m_curFbxScene->GetEvaluator()->SetContext(lAnimStack);
-
 			rootNode->m_name = lAnimStack->GetName();
 
 			const FbxTimeSpan animTimeSpan = lAnimStack->GetLocalTimeSpan();
-			scene->m_sceneLength = static_cast<hkReal>(animTimeSpan.GetDuration().GetSecondDouble());
+			scene->m_sceneLength = static_cast<hkReal>( animTimeSpan.GetDuration().GetSecondDouble() );
 			scene->m_numFrames = static_cast<hkUint32>( animTimeSpan.GetDuration().GetFrameCount(m_curFbxScene->GetGlobalSettings().GetTimeMode()) );
 			
 			printf("Converting nodes for [%s]...\n", rootNode->m_name.cString());
@@ -229,10 +246,10 @@ bool FbxToHkxConverter::createSceneStack(int animStackIndex)
 		scene->m_rootNode = rootNode;
 		rootNode->removeReference();
 
-		// Setup (identity) keyfames(s) for the 'static' root node
+		// Setup (identity) keyframes(s) for the 'static' root node
 		rootNode->m_keyFrames.setSize( scene->m_numFrames > 1 ? 2 : 1, hkMatrix4::getIdentity() );
 
-		addNodesRecursive(scene, fbxRootNode, scene->m_rootNode, animStackIndex);
+		addNodesRecursive(scene, m_rootNode, scene->m_rootNode, currentAnimStackIndex);
 	}
 
 	m_scenes.pushBack(scene);
@@ -265,15 +282,14 @@ void FbxToHkxConverter::addNodesRecursive(hkxScene *scene, FbxNode* fbxNode, hkx
 
 		newChildNode->m_selected = selected;
 
-		// Extract the following types of data from this node(taken from hkxScene.h):
-		//	hkxNode, hkxNodeSelectionSet, hkxCamera, hkxLight, hkxMesh, hkxMaterial, hkxTextureInplace, hkxTextureFile, hkxSkinBinding, hkxSpline
+		// Extract the following types of data from this node (taken from hkxScene.h):
 		if (fbxNodeAtttrib != NULL)
 		{
 			switch (fbxNodeAtttrib->GetAttributeType())
-			{				
+			{
 			case FbxNodeAttribute::eMesh:
 				{
-					// Generate hkxMesh and all its dependent data(ie: hkxSkinBinding, hkxMeshSection, hkxMaterial)
+					// Generate hkxMesh and all its dependent data (ie: hkxSkinBinding, hkxMeshSection, hkxMaterial)
 					if (m_options.m_exportMeshes)
 					{
 						addMesh(scene, fbxChildNode, newChildNode);
@@ -318,7 +334,7 @@ void FbxToHkxConverter::addNodesRecursive(hkxScene *scene, FbxNode* fbxNode, hkx
 		}
 
 		// Extract this node's animation data and bind transform
-		extractKeyFramesAndAnnotations(fbxChildNode, newChildNode, animStackIndex);
+		extractKeyFramesAndAnnotations(scene, fbxChildNode, newChildNode, animStackIndex);
 
 		if (m_options.m_exportAttributes)
 		{
@@ -368,9 +384,9 @@ static void extractKeyTimes(FbxNode* fbxChildNode, FbxAnimLayer* fbxAnimLayer, c
 	}
 }
 
-void FbxToHkxConverter::extractKeyFramesAndAnnotations(FbxNode* fbxChildNode, hkxNode* newChildNode, int animStackIndex)
+void FbxToHkxConverter::extractKeyFramesAndAnnotations(hkxScene *scene, FbxNode* fbxChildNode, hkxNode* newChildNode, int animStackIndex)
 {
-	FbxAMatrix bindPoseMatrix = fbxChildNode->EvaluateLocalTransform();
+	FbxAMatrix bindPoseMatrix;
 	FbxAnimStack* lAnimStack = NULL;
 	int numAnimLayers = 0;
 	FbxTimeSpan animTimeSpan;
@@ -381,13 +397,8 @@ void FbxToHkxConverter::extractKeyFramesAndAnnotations(FbxNode* fbxChildNode, hk
 		numAnimLayers = lAnimStack->GetMemberCount<FbxAnimLayer>();
 		animTimeSpan = lAnimStack->GetLocalTimeSpan();
 	}
-	else
-	{
-		//bindPoseMatrix = GetGeometry(fbxChildNode);
-		//bindPoseMatrix.SetIdentity();
-	}
-		
-	// Find the time offset(in the "time space" of the FBX file) of the first animation frame
+
+	// Find the time offset (in the "time space" of the FBX file) of the first animation frame
 	FbxTime timePerFrame; timePerFrame.SetTime(0, 0, 0, 1, 0, m_curFbxScene->GetGlobalSettings().GetTimeMode());
 	const FbxTime startTime = animTimeSpan.GetStart();
 	const FbxTime endTime = animTimeSpan.GetStop();
@@ -395,54 +406,66 @@ void FbxToHkxConverter::extractKeyFramesAndAnnotations(FbxNode* fbxChildNode, hk
 	const hkReal startTimeSeconds = static_cast<hkReal>(startTime.GetSecondDouble());
 	const hkReal endTimeSeconds = static_cast<hkReal>(endTime.GetSecondDouble());
 
-	hkArray<hkStringOld> annotationStrings;
-	hkArray<hkReal> annotationTimes;
-
-	HK_ASSERT(0x0, newChildNode->m_keyFrames.getSize() == 0);
 	int numFrames = 0;
 	bool staticNode = true;
 
-	// Sample each animation frame
-	for(FbxTime time = startTime, priorSampleTime = endTime; time < endTime; priorSampleTime = time, time += timePerFrame, ++numFrames)
+	if (scene->m_sceneLength == 0)
 	{
-		FbxAMatrix frameMatrix = fbxChildNode->EvaluateLocalTransform(time);
-		staticNode = staticNode && (frameMatrix == bindPoseMatrix);
+		bindPoseMatrix = fbxChildNode->EvaluateLocalTransform(startTime);
+	}
+	else
+	{
+		hkArray<hkStringOld> annotationStrings;
+		hkArray<hkReal> annotationTimes;
 
-		hkMatrix4 mat;
+		HK_ASSERT(0x0, newChildNode->m_keyFrames.getSize() == 0);
 
-		// Extract this frame's transform
-		convertFbxXMatrixToMatrix4(frameMatrix, mat);
-		newChildNode->m_keyFrames.pushBack(mat);
-
-		// Extract all annotation strings for this frame using the deprecated pipeline (new annotations are extracted when sampling attributes)
-		if (m_options.m_exportAnnotations && numAnimLayers > 0)
+		// Sample each animation frame
+		for (FbxTime time = startTime, priorSampleTime = endTime;
+			 time < endTime;
+			 priorSampleTime = time, time += timePerFrame, ++numFrames)
 		{
-			FbxProperty prop = fbxChildNode->GetFirstProperty();
-			while(prop.IsValid())
-			{
-				FbxString propName  = prop.GetName();
-				FbxDataType lDataType = prop.GetPropertyDataType();
-				hkStringOld name(propName.Buffer(), (int) propName.GetLen());
-				if (name.asUpperCase().beginsWith("HK") && lDataType.GetType() == eFbxEnum)
-				{
-					FbxAnimLayer* lAnimLayer = lAnimStack->GetMember<FbxAnimLayer>(0);
-					FbxAnimCurve* lAnimCurve = prop.GetCurve(lAnimLayer);
+			FbxAMatrix frameMatrix = fbxChildNode->EvaluateLocalTransform(time);
+			staticNode = staticNode && (frameMatrix == bindPoseMatrix);
 
-					int currentKeyIndex;
-					const int keyIndex = (int) lAnimCurve->KeyFind(time, &currentKeyIndex);
-					const int priorKeyIndex = (int) lAnimCurve->KeyFind(priorSampleTime);
-					// Only store annotations on frames where they're explicitly keyframed, or if this is the first keyframe 
-					if (priorKeyIndex != keyIndex)
+			hkMatrix4 mat;
+
+			// Extract this frame's transform
+			convertFbxXMatrixToMatrix4(frameMatrix, mat);
+			newChildNode->m_keyFrames.pushBack(mat);
+
+			// Extract all annotation strings for this frame using the deprecated
+			// pipeline (new annotations are extracted when sampling attributes)
+			if (m_options.m_exportAnnotations && numAnimLayers > 0)
+			{
+				FbxProperty prop = fbxChildNode->GetFirstProperty();
+				while(prop.IsValid())
+				{
+					FbxString propName  = prop.GetName();
+					FbxDataType lDataType = prop.GetPropertyDataType();
+					hkStringOld name(propName.Buffer(), (int) propName.GetLen());
+					if (name.asUpperCase().beginsWith("HK") && lDataType.GetType() == eFbxEnum)
 					{
-						const int currentEnumValueIndex = keyIndex < 0 ? (int) lAnimCurve->Evaluate(priorSampleTime) : (int) lAnimCurve->Evaluate(time);
-						HK_ASSERT(0x0, currentEnumValueIndex < prop.GetEnumCount());
-						const char* enumValue = prop.GetEnumValue(currentEnumValueIndex);
-						hkxNode::AnnotationData& annotation = newChildNode->m_annotations.expandOne();
-						annotation.m_time = (hkReal) (time - startTime).GetSecondDouble();
-						annotation.m_description = (name + hkStringOld(enumValue, hkString::strLen(enumValue))).cString();
+						FbxAnimLayer* lAnimLayer = lAnimStack->GetMember<FbxAnimLayer>(0);
+						FbxAnimCurve* lAnimCurve = prop.GetCurve(lAnimLayer);
+
+						int currentKeyIndex;
+						const int keyIndex = (int) lAnimCurve->KeyFind(time, &currentKeyIndex);
+						const int priorKeyIndex = (int) lAnimCurve->KeyFind(priorSampleTime);
+
+						// Only store annotations on frames where they're explicitly keyframed, or if this is the first keyframe 
+						if (priorKeyIndex != keyIndex)
+						{
+							const int currentEnumValueIndex = keyIndex < 0 ? (int) lAnimCurve->Evaluate(priorSampleTime) : (int) lAnimCurve->Evaluate(time);
+							HK_ASSERT(0x0, currentEnumValueIndex < prop.GetEnumCount());
+							const char* enumValue = prop.GetEnumValue(currentEnumValueIndex);
+							hkxNode::AnnotationData& annotation = newChildNode->m_annotations.expandOne();
+							annotation.m_time = (hkReal) (time - startTime).GetSecondDouble();
+							annotation.m_description = (name + hkStringOld(enumValue, hkString::strLen(enumValue))).cString();
+						}
 					}
+					prop = fbxChildNode->GetNextProperty(prop);
 				}
-				prop = fbxChildNode->GetNextProperty(prop);
 			}
 		}
 	}
@@ -451,7 +474,7 @@ void FbxToHkxConverter::extractKeyFramesAndAnnotations(FbxNode* fbxChildNode, hk
 	if (staticNode)
 	{
 		// Static nodes in animated scene data are exported with two keys
-		const bool exportTwoFramesForStaticNodes =(numFrames > 1);
+		const bool exportTwoFramesForStaticNodes = (numFrames > 1);
 
 		// replace transform
 		newChildNode->m_keyFrames.setSize(exportTwoFramesForStaticNodes ? 2: 1);
@@ -487,9 +510,22 @@ void FbxToHkxConverter::extractKeyFramesAndAnnotations(FbxNode* fbxChildNode, hk
 	}
 }
 
-//-------
+void FbxToHkxConverter::findChildren(FbxNode* root, hkArray<FbxNode*>& children, FbxNodeAttribute::EType type)
+{
+	for (int childIndex = 0; childIndex < root->GetChildCount(); childIndex++)
+	{
+		FbxNode *node = root->GetChild(childIndex);
+		if (node->GetNodeAttribute() != NULL &&
+			node->GetNodeAttribute()->GetAttributeType() == type)
+		{
+			children.pushBack(node);
+		}
 
-FbxAMatrix GetGlobalPosition(FbxNode* pNode, const FbxTime& pTime, FbxPose* pPose, FbxAMatrix* pParentGlobalPosition)
+		findChildren(node, children, type);
+	}
+}
+
+FbxAMatrix FbxToHkxConverter::getGlobalPosition(FbxNode* pNode, const FbxTime& pTime, FbxPose* pPose, FbxAMatrix* pParentGlobalPosition)
 {
 	FbxAMatrix lGlobalPosition;
 	bool        lPositionFound = false;
@@ -521,7 +557,7 @@ FbxAMatrix GetGlobalPosition(FbxNode* pNode, const FbxTime& pTime, FbxPose* pPos
 				{
 					if (pNode->GetParent())
 					{
-						lParentGlobalPosition = GetGlobalPosition(pNode->GetParent(), pTime, pPose);
+						lParentGlobalPosition = getGlobalPosition(pNode->GetParent(), pTime, pPose);
 					}
 				}
 
@@ -547,6 +583,8 @@ FbxAMatrix GetGlobalPosition(FbxNode* pNode, const FbxTime& pTime, FbxPose* pPos
 
 	return lGlobalPosition;
 }
+
+//-------
 
 FbxAMatrix GetPoseMatrix(FbxPose* pPose, int pNodeIndex)
 {

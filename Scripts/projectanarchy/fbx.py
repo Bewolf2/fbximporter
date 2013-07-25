@@ -57,6 +57,7 @@ def convert(fbx_file,
     labelAnimationStacks = "Animation stacks:"
     labelTagFile = "Saved tag file:"
     labelSceneLength = "Scene length:"
+    labelBones = "Bones:"
 
     def log(message):
         """ Only print a message if we're in verbose mode """
@@ -109,9 +110,14 @@ def convert(fbx_file,
         animationStacks = int(utilities.parse_text(
             fbxImporterOutput,
             labelAnimationStacks))
+        
+        numBones = int(utilities.parse_text(
+            fbxImporterOutput,
+            labelBones))
+
         havokScenes = []
         isRootNode = True
-        isAnimationExport = (animationStacks > 0) and (not static_mesh)
+        isAnimationExport = (animationStacks > 0) and (numBones > 0) and (not static_mesh)
 
         # Parse the output of the FBXImporter
         while parseIndex >= 0:
@@ -152,7 +158,7 @@ def convert(fbx_file,
                 fbxImporterOutput,
                 labelSceneLength,
                 parseIndex))
-
+            
             havokScene = HavokScene(sceneFile=sceneFile,
                                     filter_set_file=outputConfigFile,
                                     asset_path=inputDirectory,

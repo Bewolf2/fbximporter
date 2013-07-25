@@ -15,7 +15,7 @@
     <Name>FBXImporterScripts</Name>
     <RootNamespace>FBXImporterScripts</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>-s C:\Projects\Havok\AnarchySDK\Tools\FBXImporter\Samples\Blender\BoxStatic.fbx</CommandLineArguments>
+    <CommandLineArguments>C:\Projects\Havok\AnarchySDK\Tools\FBXImporter\Samples\3dsmax\warrior\warrior.FBX</CommandLineArguments>
     <InterpreterPath />
     <InterpreterArguments />
   </PropertyGroup>

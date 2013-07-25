@@ -9,12 +9,35 @@
 #include "FbxToHkxConverter.h"
 #include <Common/SceneData/Skin/hkxSkinUtils.h>
 
-unsigned FbxToHkxConverter::floatsToARGB(const float r, const float g, const float b, const float a) 
+template <class T>
+void convertPropertyToVector4(const FbxPropertyT<T> &property, hkVector4 &vec, float z = 0.0f)
 {
-	return((unsigned char)(a * 255.0f) << 24) |
-		((unsigned char)(r * 255.0f) << 16) |
-		((unsigned char)(g * 255.0f) << 8) |
-		((unsigned char)(b * 255.0f));
+	vec.set( static_cast<float>(property.Get()[0]),
+			 static_cast<float>(property.Get()[1]),
+			 static_cast<float>(property.Get()[2]),
+			 z );
+}
+
+template <typename T>
+unsigned elementsToARGB(const T r, const T g, const T b, const T a) 
+{
+	return (static_cast<unsigned char>(static_cast<float>(a) * 255.0f) << 24) |
+		   (static_cast<unsigned char>(static_cast<float>(r) * 255.0f) << 16) |
+		   (static_cast<unsigned char>(static_cast<float>(g) * 255.0f) << 8) |
+		   (static_cast<unsigned char>(static_cast<float>(b) * 255.0f));
+}
+
+FbxAMatrix FbxToHkxConverter::convertMatrix(const FbxMatrix& mat)
+{
+	FbxVector4 trans, shear, scale;
+	FbxQuaternion rot;
+	double sign;
+	mat.GetElements(trans, rot, shear, scale, sign);
+	FbxAMatrix ret;
+	ret.SetT(trans);
+	ret.SetQ(rot);
+	ret.SetS(scale);
+	return ret;
 }
 
 void FbxToHkxConverter::addSpline(hkxScene *scene, FbxNode* splineNode, hkxNode* node)
@@ -29,17 +52,20 @@ void FbxToHkxConverter::addSpline(hkxScene *scene, FbxNode* splineNode, hkxNode*
 	for(int c=1; c<=numControlPoints; c+=3)
 	{
 		FbxVector4 cvPtL, cvPtM, cvPtR;
-		cvPtL = splineAttrib->GetControlPointAt((c==0 && newSpline->m_isClosed)? numControlPoints-1 : hkMath::max2(0, c-2));  // If spline is closed, get 'in' from last knot for first i==0.
+
+		// If spline is closed, get 'in' from last knot for first i==0
+		cvPtL = splineAttrib->GetControlPointAt((c==0 && newSpline->m_isClosed)? numControlPoints-1 : hkMath::max2(0, c-2));  
 		cvPtM = splineAttrib->GetControlPointAt(c-1);
-		cvPtR = splineAttrib->GetControlPointAt((c==numControlPoints && newSpline->m_isClosed)? 0 : hkMath::min2(c, numControlPoints-1));  // If spline is closed, get 'in' from last knot for first i==0.
+		// If spline is closed, get 'in' from last knot for first i==0
+		cvPtR = splineAttrib->GetControlPointAt((c==numControlPoints && newSpline->m_isClosed)? 0 : hkMath::min2(c, numControlPoints-1));  
 
 		hkxSpline::ControlPoint& controlpoint = newSpline->m_controlPoints.expandOne();
 
-		controlpoint.m_tangentIn.set((float)cvPtL[0],(float)cvPtL[1],(float)cvPtL[2]);
-		controlpoint.m_position.set((float)cvPtM[0],(float)cvPtM[1],(float)cvPtM[2]);
-		controlpoint.m_tangentOut.set((float)cvPtR[0],(float)cvPtR[1],(float)cvPtR[2]);
-		controlpoint.m_inType = hkxSpline::CUSTOM; //
-		controlpoint.m_outType = hkxSpline::CUSTOM; //
+		controlpoint.m_tangentIn.set((float)cvPtL[0], (float)cvPtL[1], (float)cvPtL[2]);
+		controlpoint.m_position.set((float)cvPtM[0], (float)cvPtM[1], (float)cvPtM[2]);
+		controlpoint.m_tangentOut.set((float)cvPtR[0], (float)cvPtR[1], (float)cvPtR[2]);
+		controlpoint.m_inType = hkxSpline::CUSTOM;
+		controlpoint.m_outType = hkxSpline::CUSTOM;
 	}
 
 	node->m_object = newSpline;
@@ -89,7 +115,7 @@ void FbxToHkxConverter::addLight(hkxScene *scene, FbxNode* lightNode, hkxNode* n
 	newLight->m_direction.set((hkReal)-negLightDir[0],(hkReal)-negLightDir[1],(hkReal)-negLightDir[2]);
 
 	const FbxDouble3 color = lightAttrib->Color.Get();
-	newLight->m_color = floatsToARGB((hkReal)color[0],(hkReal)color[1],(hkReal)color[2]); 
+	newLight->m_color = elementsToARGB(color[0], color[1], color[2], 1.0); 
 
 	newLight->m_intensity =(hkReal)lightAttrib->Intensity.Get();
 	newLight->m_decayRate =(hkInt16)lightAttrib->DecayType.Get();
@@ -168,7 +194,7 @@ static hkxMaterial* createDefaultMaterial(const char* name)
 
 void FbxToHkxConverter::addMesh(hkxScene *scene, FbxNode* meshNode, hkxNode* node)
 {
-	FbxMesh* originalMesh =(FbxMesh*)meshNode->GetNodeAttribute();
+	FbxMesh* originalMesh = meshNode->GetMesh();
 	FbxMesh* triMesh;
 
 	if (!originalMesh->IsTriangleMesh())
@@ -193,16 +219,21 @@ void FbxToHkxConverter::addMesh(hkxScene *scene, FbxNode* meshNode, hkxNode* nod
 	hkxMaterial* sectMat = HK_NULL;
 	if (m_options.m_exportMaterials)
 	{
-		sectMat = createMaterial(scene, originalMesh);	// Use original mesh for materials
+		// Use original mesh for materials
+		sectMat = createMaterial(scene, originalMesh);
+
 		if (sectMat == HK_NULL)
 		{
 			sectMat = createDefaultMaterial("default_material");
 		}
+
 		scene->m_materials.pushBack(sectMat);
 	}
 
 	// Get skinning info	
 	const int lSkinCount = triMesh->GetDeformerCount(FbxDeformer::eSkin);
+	FbxSkin *skin = (FbxSkin *)triMesh->GetDeformer(0, FbxDeformer::eSkin);
+
 	hkArray<float> skinControlPointWeights;
 	hkArray<int> skinIndicesToClusters;
 	{
@@ -212,10 +243,10 @@ void FbxToHkxConverter::addMesh(hkxScene *scene, FbxNode* meshNode, hkxNode* nod
 			skinControlPointWeights.setSize(skinDataCount,0.0f);
 			skinIndicesToClusters.setSize(skinDataCount,-1);
 	
-			const int lClusterCount =((FbxSkin *)triMesh->GetDeformer(0, FbxDeformer::eSkin))->GetClusterCount();
-			for (int curClusterIndex=0; curClusterIndex<lClusterCount; ++curClusterIndex)
+			const int lClusterCount = skin->GetClusterCount();
+			for (int curClusterIndex=0; curClusterIndex < lClusterCount; ++curClusterIndex)
 			{
-				FbxCluster* lCluster =((FbxSkin *)triMesh->GetDeformer(0, FbxDeformer::eSkin))->GetCluster(curClusterIndex);
+				FbxCluster* lCluster = skin->GetCluster(curClusterIndex);
 				const int lIndexCount = lCluster->GetControlPointIndicesCount();
 				int* lIndices = lCluster->GetControlPointIndices();
 				double* lWeights = lCluster->GetControlPointWeights();
@@ -223,9 +254,9 @@ void FbxToHkxConverter::addMesh(hkxScene *scene, FbxNode* meshNode, hkxNode* nod
 				for (int k = 0; k < lIndexCount; k++)
 				{
 					const int controlPointIndexFour = lIndices[k] * 4;
-					for(int i=controlPointIndexFour; i<controlPointIndexFour+4; ++i)
+					for(int i = controlPointIndexFour; i < controlPointIndexFour + 4; ++i)
 					{
-						if (skinIndicesToClusters[i]<0)
+						if (skinIndicesToClusters[i] < 0)
 						{
 							skinIndicesToClusters[i] = curClusterIndex;
 							skinControlPointWeights[i] =(float)lWeights[k];
@@ -239,12 +270,12 @@ void FbxToHkxConverter::addMesh(hkxScene *scene, FbxNode* meshNode, hkxNode* nod
 		// Zero unused indices
 		for (int i = 0; i <skinIndicesToClusters.getSize(); ++i)
 		{
-			if (skinIndicesToClusters[i]<0)
+			if (skinIndicesToClusters[i] < 0)
 			{
 				skinIndicesToClusters[i] = 0;
 			}
 		}
-	}	
+	}
 
 	// Vertex buffer
 	hkxVertexBuffer* newVB = new hkxVertexBuffer();
@@ -280,20 +311,18 @@ void FbxToHkxConverter::addMesh(hkxScene *scene, FbxNode* meshNode, hkxNode* nod
 		newSkin = new hkxSkinBinding();
 		newSkin->m_mesh = newMesh;
 
-		const int lClusterCount =((FbxSkin *)triMesh->GetDeformer(0, FbxDeformer::eSkin))->GetClusterCount();
+		const int lClusterCount = skin->GetClusterCount();
 		newSkin->m_bindPose.setSize(lClusterCount);
 		newSkin->m_nodeNames.setSize(lClusterCount);
 
 		// Extract bind pose transforms & bone names
 		for(int curClusterIndex=0; curClusterIndex<lClusterCount; ++curClusterIndex)
 		{
-			FbxCluster* lCluster =((FbxSkin *)triMesh->GetDeformer(0, FbxDeformer::eSkin))->GetCluster(curClusterIndex);
+			FbxCluster* lCluster = skin->GetCluster(curClusterIndex);
 
-			newSkin->m_nodeNames[curClusterIndex] =(char*)lCluster->GetLink()->GetName();
+			newSkin->m_nodeNames[curClusterIndex] = lCluster->GetLink()->GetName();
 
-			FbxAMatrix lMatrix;
-			lMatrix = lCluster->GetLink()->EvaluateGlobalTransform();
-
+			const FbxAMatrix lMatrix = getGlobalPosition(lCluster->GetLink(), m_startTime, m_pose, NULL);			
 			convertFbxXMatrixToMatrix4(lMatrix, newSkin->m_bindPose[curClusterIndex]);
 		}
 
@@ -326,8 +355,13 @@ void FbxToHkxConverter::addMesh(hkxScene *scene, FbxNode* meshNode, hkxNode* nod
 	}
 }
 
-void FbxToHkxConverter::fillBuffers(FbxMesh* pMesh, FbxNode* originalNode, hkxVertexBuffer* newVB, hkxIndexBuffer* newIB, const hkArray<float>& skinControlPointWeights, 
-				 const hkArray<int>& skinIndicesToClusters)
+void FbxToHkxConverter::fillBuffers(
+	FbxMesh* pMesh,
+	FbxNode* originalNode,
+	hkxVertexBuffer* newVB,
+	hkxIndexBuffer* newIB,
+	const hkArray<float>& skinControlPointWeights,
+	const hkArray<int>& skinIndicesToClusters)
 {
 	// Vertex buffer
 	{
@@ -438,7 +472,8 @@ void FbxToHkxConverter::fillBuffers(FbxMesh* pMesh, FbxNode* originalNode, hkxVe
 							}
 							break;
 						default:
-							break; // Other reference modes not shown here!
+							// Other reference modes not shown here!
+							break;
 						}
 					}
 					else if (mappingMode == FbxGeometryElement::eByControlPoint)
@@ -455,18 +490,19 @@ void FbxToHkxConverter::fillBuffers(FbxMesh* pMesh, FbxNode* originalNode, hkxVe
 							}
 							break;
 						default:
-							break; // Other reference modes not shown here!
+							// Other reference modes not shown here!
+							break;
 						}
 					}
 
 					float* _normal =(float*)(normBuf);
 					_normal[0] =(float)fbxNormal[0]; _normal[1] =(float)fbxNormal[1]; _normal[2] =(float)fbxNormal[2]; _normal[3] = 0;
 					normBuf += normStride;
-				}
-				
+				}				
 
 				FbxStringList lUVSetNameList;
 				pMesh->GetUVSetNames(lUVSetNameList);
+
 				// Tex coord UV channels
 				for(int t = 0, numUVs = hkMath::min2(lUVSetNameList.GetCount(), maxNumUVs); t < numUVs; ++t)
 				{
@@ -494,7 +530,8 @@ void FbxToHkxConverter::fillBuffers(FbxMesh* pMesh, FbxNode* originalNode, hkxVe
  							}
  							break;
  						default:
- 							break; // Other reference modes not shown here!
+							// Other reference modes not shown here!
+ 							break;
  						}
  						break;
  
@@ -510,7 +547,8 @@ void FbxToHkxConverter::fillBuffers(FbxMesh* pMesh, FbxNode* originalNode, hkxVe
  								}
  								break;
  							default:
- 								break; // Other reference modes not shown here!
+								// Other reference modes not shown here!
+ 								break;
  							}
  						}
  						break;
@@ -549,7 +587,8 @@ void FbxToHkxConverter::fillBuffers(FbxMesh* pMesh, FbxNode* originalNode, hkxVe
 	 							}
 	 							break;
 	 						default:
-	 							break; // Other reference modes not shown here!
+								// Other reference modes not shown here!
+	 							break;
 	 						}
 	 						break;
 	 
@@ -567,7 +606,8 @@ void FbxToHkxConverter::fillBuffers(FbxMesh* pMesh, FbxNode* originalNode, hkxVe
 	 								}
 	 								break;
 	 							default:
-	 								break; // Other reference modes not shown here!
+									// Other reference modes not shown here!
+	 								break;
 	 							}
 	 						}
 	 						break;
@@ -579,13 +619,13 @@ void FbxToHkxConverter::fillBuffers(FbxMesh* pMesh, FbxNode* originalNode, hkxVe
 	 					}
  					}
 
-					// Vert color
-					unsigned color = floatsToARGB((float)fbxColor.mRed,(float)fbxColor.mGreen,(float)fbxColor.mBlue,(float)fbxColor.mAlpha); 
+					// Vertex color
+					unsigned color = elementsToARGB(fbxColor.mRed, fbxColor.mGreen, fbxColor.mBlue, fbxColor.mAlpha); 
 
-					hkUint32* _color =(hkUint32*)(colorBuf);
+					hkUint32* _color = (hkUint32*)(colorBuf);
 					*_color = color;
 
-					_color += colorStride;
+					colorBuf += colorStride;
  				}
 
 				if (weightsBuf && indicesBuf)
@@ -776,51 +816,34 @@ hkxMaterial* FbxToHkxConverter::createMaterial(hkxScene *scene, FbxMesh* pMesh)
 	}
 
 	// Currently assuming just one material per mesh
-	if (lMaterialCount>0)
+	if (lMaterialCount > 0)
 	{
 		lMaterial = lNode->GetMaterial(0);
 		mat = createDefaultMaterial(lMaterial->GetName());
 
 		if (lMaterial->GetClassId().Is(FbxSurfacePhong::ClassId))
 		{			
-			FbxSurfacePhong* phongMaterial =(FbxSurfacePhong *)lMaterial;
+			FbxSurfacePhong* phongMaterial = (FbxSurfacePhong *)lMaterial;
 
-			FbxPropertyT<FbxDouble> lKFbxDouble1 = phongMaterial->TransparencyFactor;
-			float fbxMatAlpha =  1.0f -(float)lKFbxDouble1.Get();
+			const float transparency =  1.0f - static_cast<float>(phongMaterial->TransparencyFactor.Get());
 
-			lKFbxDouble1 =phongMaterial->Shininess;
-			float fbxMatShininess =(float)lKFbxDouble1.Get();
-	
-			FbxPropertyT<FbxDouble3> lKFbxDouble3 = phongMaterial->Ambient;
-			mat->m_ambientColor.set((float)lKFbxDouble3.Get()[0],(float)lKFbxDouble3.Get()[1],(float)lKFbxDouble3.Get()[2]);
-	
-			lKFbxDouble3 = phongMaterial->Diffuse;
-			mat->m_diffuseColor.set((float)lKFbxDouble3.Get()[0],(float)lKFbxDouble3.Get()[1],(float)lKFbxDouble3.Get()[2], fbxMatAlpha);
-	
-			lKFbxDouble3 = phongMaterial->Specular;
-			mat->m_specularColor.set((float)lKFbxDouble3.Get()[0],(float)lKFbxDouble3.Get()[1],(float)lKFbxDouble3.Get()[2], fbxMatShininess);
-	
-			lKFbxDouble3 = phongMaterial->Emissive;
-			mat->m_emissiveColor.set((float)lKFbxDouble3.Get()[0],(float)lKFbxDouble3.Get()[1],(float)lKFbxDouble3.Get()[2]);		
+			convertPropertyToVector4(phongMaterial->Ambient, mat->m_ambientColor);
+			convertPropertyToVector4(phongMaterial->Diffuse, mat->m_diffuseColor, transparency);
+			convertPropertyToVector4(phongMaterial->Specular, mat->m_specularColor, transparency);
+			convertPropertyToVector4(phongMaterial->Emissive, mat->m_emissiveColor);
 
-			mat->m_specularExponent = fbxMatShininess;
-			mat->m_specularMultiplier =(hkReal)phongMaterial->SpecularFactor.Get();
+			mat->m_specularExponent = static_cast<hkReal>( phongMaterial->Shininess.Get() );
+			mat->m_specularMultiplier = static_cast<hkReal>( phongMaterial->SpecularFactor.Get() );
 		}
 		else if (lMaterial->GetClassId().Is(FbxSurfaceLambert::ClassId))
 		{
-			FbxSurfaceLambert* lamberMaterial =(FbxSurfaceLambert *)lMaterial;
+			FbxSurfaceLambert* lamberMaterial = (FbxSurfaceLambert *)lMaterial;
 
-			FbxPropertyT<FbxDouble> lKFbxDouble1 = lamberMaterial->TransparencyFactor;
-			float fbxMatAlpha = (float)lKFbxDouble1.Get();
+			const float transparency = static_cast<float>( lamberMaterial->TransparencyFactor.Get() );
 
-			FbxPropertyT<FbxDouble3> lKFbxDouble3 =lamberMaterial->Ambient;
-			mat->m_ambientColor.set((float)lKFbxDouble3.Get()[0],(float)lKFbxDouble3.Get()[1],(float)lKFbxDouble3.Get()[2]);
-
-			lKFbxDouble3 =lamberMaterial->Diffuse;
-			mat->m_diffuseColor.set((float)lKFbxDouble3.Get()[0],(float)lKFbxDouble3.Get()[1],(float)lKFbxDouble3.Get()[2], fbxMatAlpha);
-
-			lKFbxDouble3 =lamberMaterial->Emissive;
-			mat->m_emissiveColor.set((float)lKFbxDouble3.Get()[0],(float)lKFbxDouble3.Get()[1],(float)lKFbxDouble3.Get()[2]);
+			convertPropertyToVector4(lamberMaterial->Ambient, mat->m_ambientColor);
+			convertPropertyToVector4(lamberMaterial->Diffuse, mat->m_diffuseColor, transparency);			
+			convertPropertyToVector4(lamberMaterial->Emissive, mat->m_emissiveColor);
 		}
 		else
 		{
@@ -832,7 +855,7 @@ hkxMaterial* FbxToHkxConverter::createMaterial(hkxScene *scene, FbxMesh* pMesh)
 		// Extract texture stage info
 		if (lMaterial)
 		{
-			//Get all UV set names from the mesh
+			// Get all UV set names from the mesh
 			FbxStringList lUVSetNameList;
 			pMesh->GetUVSetNames(lUVSetNameList);
 

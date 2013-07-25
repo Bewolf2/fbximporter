@@ -42,12 +42,12 @@
   <PropertyGroup>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">.exe</TargetExt>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">.exe</TargetExt>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">..\..\..\Obj\win32_vs2010_anarchy\debug_dll\FBXImporter\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">..\Bin</OutDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">FBXImporter</TargetName>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">..\Obj\debug_dll\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">..\Bin\</OutDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">FBXImporterD</TargetName>
     <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">exe\win32_vs2010\debug_dll\FBXImporter.exe</OutputFile>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">..\..\..\Obj\win32_vs2010_anarchy\dev_dll\FBXImporter\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">..\Bin</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">..\Obj\dev_dll\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">..\Bin\</OutDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">FBXImporter</TargetName>
     <OutputFile Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">exe\win32_vs2010\dev_dll\FBXImporter.exe</OutputFile>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">true</LinkIncremental>
