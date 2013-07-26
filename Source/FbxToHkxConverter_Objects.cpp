@@ -328,8 +328,7 @@ void FbxToHkxConverter::addMesh(hkxScene *scene, FbxNode* meshNode, hkxNode* nod
 
 		// Extract the world transform of the original, skinned mesh
 		{
-			FbxAMatrix lMatrix;			
-			lMatrix = meshNode->EvaluateGlobalTransform();
+			FbxAMatrix lMatrix = meshNode->EvaluateGlobalTransform();
 			convertFbxXMatrixToMatrix4(lMatrix, newSkin->m_initSkinTransform);
 		}
 	}
@@ -445,15 +444,17 @@ void FbxToHkxConverter::fillBuffers(
 					FbxVector4 fbxPos = lControlPoints[lControlPointIndex];
 					fbxPos = geometricTransform.MultT(fbxPos);
 
-					float* _pos =(float*)(posBuf);
-					_pos[0] =(float)fbxPos[0]; _pos[1] =(float)fbxPos[1]; _pos[2] =(float)fbxPos[2]; _pos[3] = 0;
+					float* _pos = (float*)(posBuf);
+					_pos[0] = (float)fbxPos[0];
+					_pos[1] = (float)fbxPos[1];
+					_pos[2] = (float)fbxPos[2];
+					_pos[3] = 0;
 					posBuf += posStride;
 				}
 
 				if (normBuf)
 				{
 					FbxVector4 fbxNormal;
-
 					FbxGeometryElementNormal* leNormal = pMesh->GetElementNormal(0);
 
 					const FbxGeometryElement::EMappingMode mappingMode = leNormal->GetMappingMode();
@@ -496,7 +497,10 @@ void FbxToHkxConverter::fillBuffers(
 					}
 
 					float* _normal =(float*)(normBuf);
-					_normal[0] =(float)fbxNormal[0]; _normal[1] =(float)fbxNormal[1]; _normal[2] =(float)fbxNormal[2]; _normal[3] = 0;
+					_normal[0] = (float)fbxNormal[0];
+					_normal[1] = (float)fbxNormal[1];
+					_normal[2] = (float)fbxNormal[2];
+					_normal[3] = 0;
 					normBuf += normStride;
 				}				
 
@@ -560,8 +564,8 @@ void FbxToHkxConverter::fillBuffers(
  					}
 
 					float* _uv =(float*)(texCoordBuf + textureCoordinateArrayPositions[t]);
-					_uv[0] =(float)fbxUV[0];
-					_uv[1] =(float)fbxUV[1];
+					_uv[0] = (float)fbxUV[0];
+					_uv[1] = (float)fbxUV[1];
 					textureCoordinateArrayPositions[t] += texCoordStride;
 				}
 
@@ -734,11 +738,11 @@ hkReferencedObject* FbxToHkxConverter::convertTexture(
 
 		// Update the UV mapping parameters stored within the material
 		mat->m_uvMapAlgorithm = hkxMaterial::UVMA_3DSMAX_STYLE;
-		mat->m_uvMapOffset[0] =(hkReal)fbxTextureFile->GetUVTranslation()[0];
-		mat->m_uvMapOffset[1] =(hkReal)fbxTextureFile->GetUVTranslation()[1];
-		mat->m_uvMapScale[0] =(hkReal)fbxTextureFile->GetUVScaling()[0];
-		mat->m_uvMapScale[1] =(hkReal)fbxTextureFile->GetUVScaling()[1];
-		mat->m_uvMapRotation =(hkReal)fbxTextureFile->GetRotationW();
+		mat->m_uvMapOffset[0] = (hkReal)fbxTextureFile->GetUVTranslation()[0];
+		mat->m_uvMapOffset[1] = (hkReal)fbxTextureFile->GetUVTranslation()[1];
+		mat->m_uvMapScale[0] = (hkReal)fbxTextureFile->GetUVScaling()[0];
+		mat->m_uvMapScale[1] = (hkReal)fbxTextureFile->GetUVScaling()[1];
+		mat->m_uvMapRotation = (hkReal)fbxTextureFile->GetRotationW();
 
 		hkPointerMap<FbxTexture*, hkRefVariant*>::Iterator it = m_convertedTextures.findKey(fbxTextureFile);
 		if (m_convertedTextures.isValid(it))

@@ -12,13 +12,57 @@ import os
 
 import utilities
 
+
+def _getRegistryValue(root_key, key):
+    """
+    Try to get a registry value from the current user. Handles both
+    Python 2.X and Python 3.X
+    """
+
+    value = ""
+
+    try:
+        from winreg import ConnectRegistry, OpenKey, QueryValueEx, HKEY_CURRENT_USER
+    except ImportError:
+        try:
+            from _winreg import ConnectRegistry, OpenKey, QueryValueEx, HKEY_CURRENT_USER
+        except ImportError:
+            value = ""
+
+    try:
+        aReg = ConnectRegistry(None, HKEY_CURRENT_USER)
+        aKey = OpenKey(aReg, root_key)
+        value = QueryValueEx(aKey, key)[0]
+    except WindowsError:
+        value = ""
+
+    return value
+
+
 def _getHavokContentToolsPath():
-    havok_tools_root = os.environ.get('HAVOK_TOOLS_ROOT')
+    """
+    Try to find the Havok Content Tools path through the registry, environment
+    variable, and by default install location
+    """
+
+    havok_tools_root = _getRegistryValue("Software\\Havok\\hkFilters", "FilterPath")
+    if not os.path.exists(havok_tools_root):
+        havok_tools_root = _getRegistryValue("Software\\Havok\\hkFilters_x64", "FilterPath")
+
+    if not os.path.exists(havok_tools_root):
+        havok_tools_root = os.environ.get('HAVOK_TOOLS_ROOT')
+
     if not os.path.exists(str(havok_tools_root)):
         havok_tools_root = "C:\\Program Files\\Havok\\HavokContentTools"
     if not os.path.exists(havok_tools_root):
         havok_tools_root = "C:\\Program Files (x86)\\Havok\\HavokContentTools"
+
+    if not os.path.exists(havok_tools_root):
+        havok_tools_root = ""
+        print("Could not find path to Havok Content Tools!")
+
     return havok_tools_root
+
 
 class HCT():
     def __init__(self):
@@ -39,7 +83,7 @@ class HCT():
         arguments = [
            "-p", asset_path + "\\",
            "-o", output_path + "\\",
-           "-s", filter_set ]
+           "-s", filter_set]
 
         if interactive:
             arguments.append("-i")

@@ -8,17 +8,15 @@ Handles calling the FBX Importer executable and then processing the result of th
 
 There are two primary pieces to this:
 
-1. **FBXImporter.exe** - This is a C++ project that generates an executable that takes an FBX file as input and converts it to a Havok scene file (e.g. a tag
-file with extension .hkx or .hkt).
-2. **convert.py** - This takes an FBX file as input, calls FBXImporter.exe to generate the HKX files, and then it takes the outputted files and generates
-corresponding Vision or Animation Studio compatible files by calling the Havok Content Tools standalone filter manager (**hctStandAloneFilterManager.exe**).
+1. **FBXImporter.exe** - This is a C++ project that generates an executable that takes an FBX file as input and converts it to a Havok scene file (e.g. a tag file with extension .hkx or .hkt).
+2. **convert.py** - This takes an FBX file as input, calls **FBXImporter.exe** to generate the HKX files, and then it takes the outputted files and generates corresponding Vision or Animation Studio compatible files by calling the Havok Content Tools standalone filter manager (**hctStandAloneFilterManager.exe**). After packaging, this is converted into an executable and put here: **$(AnarchySDK)\Bin\Tools\FBXConverter.exe**
 
 Dependencies
 ------------
 
 * [Visual C++ 2010][1]
 * [Python 2.7.X][2]
-* [FBX SDK 2013.3][4] - **We will be upgrading to 2014.1 soon!**
+* [FBX SDK 2013.3 VS 2010][4] - **We will be upgrading to 2014.1 soon!**
 * [Python Tools for Visual Studio][5] - Useful for debugging your projects and we include a .pyproj/.sln so you'll need to have it installed to successfully open the solution.
 * [py2exe][6] - Needed if you're going to create a package
 
@@ -26,19 +24,27 @@ Compiling
 ---------
 
 1. Install the Project Anarchy SDK from the [homepage][3]
-    * Make sure the content tools and SDK are checked for install
-2. Install [FBX SDK 2013.3][4]
+    * Make sure the **Havok Content Tools** (32bit or 64bit) and **Havok Anarchy SDK** are downloaded and installed
+2. Install [FBX SDK 2013.3 VS 2010][4]
 2. Git clone the repository into **$(AnarchySDK)\Tools\FBXImporter**
     * ```git clone https://github.com/projectanarchy/fbximporter.git FBXImporter```
 3. Open **$(AnarchySDK)\Tools\FBXImporter\Workspace\FBXImporter.sln**
-    * Build the project using **Dev DLL** Configuration. This will output an executable to: **$(AnarchySDK)\Bin\Tools\FBXImporter.exe**
+    * Build the project using **Dev DLL** Configuration. This will output an executable to: **$(AnarchySDK)\Tools\FBXImporter\Bin\FBXImporter.exe**
 4. Now you can drag/drop an FBX file onto the Python convert script:
     * **$(AnarchySDK)\Tools\FBXImporter\Scripts\convert.py**
 
 Usage
 -----
 
-The following sections describe what files get generated for the particular kind of FBX asset. For all generated assets, there will be a cooresponding HKO file that contains the filter set used to generate the file. These are passed in to the Havok Content Tools standalone filter manager (**hctStandAloneFilterManager.exe**). For example, if you would like to re-generate the StaticBox example below:
+There is a pre-packaged version available from here:
+
+	http://software.intel.com/sites/havok/downloads/project_anarchy/ProjectAnarchy_FBXImporter_20130718.zip
+
+This includes an executable version of the **convert.py** script. It was renamed and placed here:
+
+* **$(AnarchySDK)\Bin\Tools\FBXConverter.exe**
+
+As with the **convert.py** script, you just need to drag/drop your FBX file onto the executable. There are some command line options available, however, which you can read more about below. For all generated assets, there will be a cooresponding HKO file that contains the filter set used to generate the file. These are passed in to the Havok Content Tools standalone filter manager (**hctStandAloneFilterManager.exe**). For example, if you would like to re-generate the StaticBox example below:
 
 ```hctStandAloneFilterManager.exe -s StaticBox.hko StaticBox.hkt```
 
@@ -53,11 +59,11 @@ If you want to edit the filters manually, you can add the **interactive mode** w
 
 Options:
 
-- -h, --help: Show help message and exit
-- -i, --interactive: Use interactive mode which will bring up the standalone filter manager
-- -q, --quiet: Don't print out status updates
-- -m, --model: Output a Vision Model file (does NOT include animations!)
-- -s, --static-mesh: Forces it to output a static mesh and not a model with animation
+- **-h, --help**: Show help message and exit
+- **-i, --interactive**: Use interactive mode which will bring up the standalone filter manager
+- **-q, --quiet**: Don't print out status updates
+- **-m, --model**: Output a Vision Model file (does NOT include animations!)
+- **-s, --static-mesh**: Forces it to output a static mesh and not a model with animation
 
 ### Static Mesh (Vision)
 
@@ -95,11 +101,9 @@ This is to be used with Animation Studio. **Vision Model files generation is cur
 Licence
 -------
 
-Confidential Information of Havok.  (C) Copyright 1999-2013 Telekinesys Research Limited t/a Havok. All Rights Reserved. The Havok Logo, and the Havok buzzsaw
-logo are trademarks of Havok.  Title, ownership rights, and intellectual property rights in the Havok software remain in Havok and/or its suppliers.
+Confidential Information of Havok.  (C) Copyright 1999-2013 Telekinesys Research Limited t/a Havok. All Rights Reserved. The Havok Logo, and the Havok buzzsaw logo are trademarks of Havok.  Title, ownership rights, and intellectual property rights in the Havok software remain in Havok and/or its suppliers.
 
-Use of this software for evaluation purposes is subject to and indicates acceptance of the End User licence Agreement for this product. A copy of the
-license is included with this software and is also available from salesteam@havok.com.
+Use of this software for evaluation purposes is subject to and indicates acceptance of the End User licence Agreement for this product. A copy of the license is included with this software and is also available from salesteam@havok.com.
 
 [1]: http://www.microsoft.com/visualstudio/eng/downloads#d-2010-express
 [2]: http://www.python.org/download/releases/2.7.5/
