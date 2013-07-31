@@ -107,6 +107,9 @@ def makePackage(packagePath):
     the script will cause errors (due to how py2exe works).
     """
 
+    if not os.path.exists(os.path.dirname(packagePath)):
+        os.makedirs(os.path.dirname(packagePath))
+
     packageZip = zipfile.ZipFile(packagePath, 'w')
 
     def addFileToZip(src, dest):
