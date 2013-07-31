@@ -10,8 +10,8 @@ For the most recent packaged version, go to the main Project Anarchy download pa
 
 Here are the tools included in the package:
 
-1. **Bin\\Tools\\FBXConverter.exe** - This takes an FBX file as input, calls **FBXImporter.exe** to generate the HKX files, and then it takes the outputted files and generates corresponding Vision or Animation Studio compatible files by calling the Havok Content Tools standalone filter manager (**hctStandAloneFilterManager.exe**). If you just have source, then this won't exist until you run the packaging step (see Packaging section below), which converts the **Tools\\FBXImporter\\Bin\\Scripts\\convert.py** script into an executable.
-2. **Bin\\Tools\\PreviewTool.exe** - Drag/drop outputted hkx/hkt files onto this executable and it will attempt to find the Havok Content Tools  preview tool (**ToolStandAlone.exe**) and use that to preview the asset. You can just as easily 
+1. **Bin\\Tools\\FBXConverter.exe** - This takes an FBX file as input, calls **FBXImporter.exe** to generate the HKX files, and then it takes the outputted files and generates corresponding Vision or Animation Studio compatible files by calling the Havok Content Tools standalone filter manager (hctStandAloneFilterManager.exe). If you just have source, then this won't exist until you run the packaging step (see Packaging section below), which converts the **Tools\\FBXImporter\\Bin\\Scripts\\convert.py** script into an executable.
+2. **Bin\\Tools\\PreviewTool.exe** - Drag/drop outputted hkx/hkt files onto this executable and it will attempt to find the Havok Content Tools preview tool (ToolStandAlone.exe) and use that to preview the asset. You can just as easily 
 3. **Tools\\FBXImporter\\Bin\\FBXImporter.exe** - Takes an FBX file as input and converts it to a Havok scene file (e.g. a tag file with extension .hkx or .hkt). Usually won't need to call this manually as **FBXConverter.exe** will call it.
 
 Usage
@@ -56,7 +56,7 @@ If you have an FBX file named **AnimatedBox.fbx** that has one animation named *
 - ```AnimatedBox_Bounce.hkt```
 - ```AnimatedBox_Bounce.hko``` - Used to generate ```AnimatedBox__out_anim_Bounce.hkx```.
 
-This is to be used with Animation Studio. **Vision Model files generation is currently not supported.**
+These files are to be used with Animation Studio.
 
 ### Model (Vision)
 
@@ -66,7 +66,7 @@ If you have an FBX file named **StaticBox.fbx**, passing it to **convert.py** al
 - ```StaticBox.hkt```
 - ```StaticBox.hko``` - The configuration (filter set) that's passed to the filter tools.
 
-**NOTE: Model files do NOT support animations at this time!**
+**NOTE: Generated Vision model files do not yet support animations**
 
 Dependencies
 ------------
